@@ -1,0 +1,12 @@
+server:
+  port: 8080
+
+management:
+  context-path: /management
+  security:
+    enabled: false
+
+security:
+  user:
+    name: admin
+    password: admin
