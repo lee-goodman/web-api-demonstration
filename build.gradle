@@ -7,14 +7,16 @@ buildscript {
 	}
 	dependencies {
 		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+        classpath("se.transmode.gradle:gradle-docker:1.2")
 	}
 }
 
 apply plugin: 'java'
 apply plugin: 'eclipse'
 apply plugin: 'org.springframework.boot'
+apply plugin: 'docker'
 
-version = '0.0.1-SNAPSHOT'
+version = 'latest'
 sourceCompatibility = 1.8
 
 repositories {
@@ -32,4 +34,15 @@ dependencies {
 
 task wrapper(type: Wrapper) {
 	gradleVersion = '3.5'
+}
+
+task dockerize(type: Docker, dependsOn: 'assemble') {
+    baseImage('openjdk:8u121-jre')
+    addFile(jar.getArchivePath().absolutePath, 'app.jar')
+    entryPoint(['java', '-jar', 'app.jar'])
+
+    maintainer('Lee Goodman "lee.ap.goodman@gmail.com"')
+
+    tag "leegoodman/${project.name}"
+    push true
 }
