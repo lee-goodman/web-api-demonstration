@@ -1,6 +1,11 @@
 package lg.webapidemo.position;
 
+import com.google.common.io.CharStreams;
+import org.apache.commons.io.IOUtils;
+import org.springframework.core.io.ClassPathResource;
+
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -15,9 +20,9 @@ public class Map {
     private List<List<MapElement>> map;
 
     public Map(Integer levelNumber) throws URISyntaxException, IOException {
-        Path path = Paths.get(ClassLoader.getSystemResource("maps/map_" + levelNumber + ".map").toURI());
+        ClassPathResource resource = new ClassPathResource("maps/map_" + levelNumber + ".map");
 
-        map = Files.lines(path).map(
+        map = CharStreams.readLines(new InputStreamReader(resource.getInputStream())).stream().map(
                 row -> Arrays.stream(row.split("\\s")).map(MapElement::fromMapNotationElement).collect(toList())
             ).collect(toList());
     }
