@@ -5,6 +5,5 @@ management:
   context-path: /management
 
 security:
-  user:
-    name: admin
-    password: 16ba9e4d-231f-4f58-8128-f61f7c15a46f
+  basic:
+    enabled: false

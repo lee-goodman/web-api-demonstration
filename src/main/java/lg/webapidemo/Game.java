@@ -1,20 +1,23 @@
 package lg.webapidemo;
 
-import lg.webapidemo.movement.Direction;
-import lg.webapidemo.movement.Distance;
-import lg.webapidemo.movement.Map;
-import lg.webapidemo.movement.Point;
+import lg.webapidemo.position.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+import java.io.IOException;
 import java.net.URISyntaxException;
-import java.nio.file.Paths;
-import java.util.List;
 
 public class Game {
+
+    private static final Logger LOG = LoggerFactory.getLogger(Game.class);
 
     private Map map;
     private Point playerPosition;
 
-    public Game(Integer level) throws URISyntaxException {
+    public Game(String gameId, Integer level) throws URISyntaxException, IOException {
+        this.map = new Map(level);
+        this.playerPosition = this.map.playerStartingPosition();
+        LOG.info("Game '{}' started, level {}, player is at {}", gameId, level, this.playerPosition);
     }
 
     public Boolean isGameComplete() {
@@ -25,8 +28,8 @@ public class Game {
         return map.distanceToGoal(playerPosition);
     }
 
-    public String getPlayerSurroundings() {
-        return null;
+    public Surroundings getPlayerSurroundings() {
+        return map.getPlayerSurroundings(playerPosition);
     }
 
     public Boolean move(Direction direction) {

@@ -1,9 +1,5 @@
-package lg.webapidemo.movement;
+package lg.webapidemo.position;
 
-import lg.webapidemo.movement.Point;
-
-import javax.el.MapELResolver;
-import javax.swing.text.Position;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.nio.file.Files;
@@ -18,15 +14,15 @@ public class Map {
 
     private List<List<MapElement>> map;
 
-    Map(Integer levelNumber) throws URISyntaxException, IOException {
-        Path path = Paths.get(ClassLoader.getSystemResource("/maps/map_" + levelNumber + ".map").toURI());
+    public Map(Integer levelNumber) throws URISyntaxException, IOException {
+        Path path = Paths.get(ClassLoader.getSystemResource("maps/map_" + levelNumber + ".map").toURI());
 
         map = Files.lines(path).map(
                 row -> Arrays.stream(row.split("\\s")).map(MapElement::fromMapNotationElement).collect(toList())
             ).collect(toList());
     }
 
-    Point playerStartingPosition() {
+    public Point playerStartingPosition() {
         return getPositionOfElement(MapElement.PLAYER);
     }
 
@@ -39,10 +35,22 @@ public class Map {
     }
 
     public Boolean isIllegalPlayerPosition(Point playerPosition) {
-        return !getMapElementAtPoint(playerPosition).equals(MapElement.WALL);
+        return getMapElementAtPoint(playerPosition).equals(MapElement.WALL);
+    }
+
+    public Surroundings getPlayerSurroundings(Point playerPosition) {
+        return new Surroundings(
+                getMapElementAtPoint(playerPosition.translate(Direction.UP)),
+                getMapElementAtPoint(playerPosition.translate(Direction.RIGHT)),
+                getMapElementAtPoint(playerPosition.translate(Direction.DOWN)),
+                getMapElementAtPoint(playerPosition.translate(Direction.LEFT))
+        );
     }
 
     private MapElement getMapElementAtPoint(Point point) {
+        if(point.outOfBounds(map.get(0).size(), map.size())) {
+            return null;
+        }
         return map.get(point.getY()).get(point.getX());
     }
 
@@ -54,25 +62,6 @@ public class Map {
             }
         }
         return null;
-    }
-
-    private enum MapElement {
-        EMPTY("."), WALL("x"), GOAL("g"), PLAYER("p");
-
-        private String mapNotation;
-
-        MapElement(String mapNotation) {
-            this.mapNotation = mapNotation;
-        }
-
-        static MapElement fromMapNotationElement(String element) {
-            for(MapElement mapElement : MapElement.values()) {
-                if(mapElement.mapNotation.equals(element)) {
-                    return mapElement;
-                }
-            }
-            return null;
-        }
     }
 
 }

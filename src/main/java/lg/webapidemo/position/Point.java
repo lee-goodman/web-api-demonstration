@@ -1,4 +1,4 @@
-package lg.webapidemo.movement;
+package lg.webapidemo.position;
 
 public class Point {
 
@@ -18,13 +18,22 @@ public class Point {
         return y;
     }
 
+    Boolean outOfBounds(Integer mapWidth, Integer mapHeight) {
+        return (x < 0 || x >= mapWidth) || (y < 0 || y >= mapHeight);
+    }
+
     public Point translate(Direction direction) {
         switch (direction) {
-            case UP: return new Point(x, y+1);
-            case DOWN: return new Point(x, y-1);
+            case UP: return new Point(x, y-1);
+            case DOWN: return new Point(x, y+1);
             case RIGHT: return new Point(x+1, y);
             case LEFT: return new Point(x-1, y);
             default: return this;
         }
+    }
+
+    @Override
+    public String toString() {
+        return "(" + x + "," + y + ")";
     }
 }
