@@ -3,12 +3,8 @@ package lg.webapidemo;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import lg.webapidemo.position.Direction;
-import lg.webapidemo.position.Surroundings;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.concurrent.TimeUnit;
 
@@ -25,7 +21,7 @@ public class GameController {
 
     @PostMapping("/move")
     public ResponseEntity<String> movePlayer(@RequestParam String gameId, @RequestParam Direction direction) {
-        Boolean moveSuccess = games.getIfPresent(gameId).move(direction);
+        Boolean moveSuccess = getGame(gameId).move(direction);
 
         ResponseEntity<String> response = ResponseEntity.ok("Player has moved!");
         if(!moveSuccess) {
@@ -36,17 +32,29 @@ public class GameController {
 
     @GetMapping("/distance")
     public String getDistanceToObjective(@RequestParam String gameId) {
-        return games.getIfPresent(gameId).getDistanceToGoal().toString();
+        return getGame(gameId).getDistanceToGoal().toString();
     }
 
     @GetMapping("/surroundings")
     public String getSurroundings(@RequestParam String gameId) {
-        return games.getIfPresent(gameId).getPlayerSurroundings().toString();
+        return getGame(gameId).getPlayerSurroundings().toString();
     }
 
     @GetMapping("/status")
     public String getGameStatus(@RequestParam String gameId) {
-        return "Game is " + (games.getIfPresent(gameId).isGameComplete() ? "complete" : "incomplete");
+        return "Game is " + (getGame(gameId).isGameComplete() ? "complete" : "incomplete");
     }
 
+    private Game getGame(String gameId) {
+        Game game = games.getIfPresent(gameId);
+        if(game == null) {
+            throw new GameNotFoundException("Game " + gameId + " does not exist!");
+        }
+        return game;
+    }
+
+    @ExceptionHandler(GameNotFoundException.class)
+    public String handleGameNotFoundException(GameNotFoundException exception) {
+        return exception.getMessage();
+    }
 }
