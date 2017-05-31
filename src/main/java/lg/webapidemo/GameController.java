@@ -16,7 +16,7 @@ public class GameController {
     @PostMapping("/newGame")
     public String startNewGame(@RequestParam String gameId) throws Exception {
         games.put(gameId, new Game(gameId,1));
-        return "Started game: \"" + gameId + "\"";
+        return "Started game : \"" + gameId + "\"";
     }
 
     @PostMapping("/move")
