@@ -20,6 +20,7 @@ version = 'latest'
 sourceCompatibility = 1.8
 
 repositories {
+    jcenter()
 	mavenCentral()
 }
 
@@ -28,6 +29,9 @@ dependencies {
 	compile('org.springframework.boot:spring-boot-starter-actuator')
 	compile('org.springframework.boot:spring-boot-starter-security')
 	compile('org.springframework.boot:spring-boot-starter-web')
+
+    compile('io.springfox:springfox-swagger2:2.7.0')
+    compile('io.springfox:springfox-swagger-ui:2.7.0')
 
     compile('com.google.guava:guava:21.0')
 
