@@ -1,5 +1,6 @@
 package lg.webapidemo;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -12,7 +13,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(MethodArgumentTypeMismatchException.class)
     public ResponseEntity<String> handleMethodArgumentTypeMismatchException(MethodArgumentTypeMismatchException exception) {
         if(exception.getRequiredType().isEnum()) {
-            return ResponseEntity.ok("The value '" + exception.getValue() + "' is not a valid " + exception.getName() + ", remember it should be upper case");
+            return ResponseEntity.badRequest().body("The value '" + exception.getValue() + "' is not a valid " + exception.getName() + ", remember it should be upper case");
         }
 
         return ResponseEntity.ok("The value '" + exception.getValue() + "' is not a valid " + exception.getName());
@@ -20,6 +21,6 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
     public ResponseEntity<String> handleRequestMethodNotSupported(HttpRequestMethodNotSupportedException exception) {
-        return ResponseEntity.ok("This endpoint doesn't support " + exception.getMethod() + " requests!");
+        return new ResponseEntity<String>("This endpoint doesn't support " + exception.getMethod() + " requests!", HttpStatus.METHOD_NOT_ALLOWED);
     }
 }
