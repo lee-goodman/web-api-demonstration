@@ -2,39 +2,39 @@ package lg.webapidemo.position;
 
 public class Surroundings {
 
-    private MapElement north;
-    private MapElement east;
-    private MapElement south;
-    private MapElement west;
+    private MapElement up;
+    private MapElement right;
+    private MapElement down;
+    private MapElement left;
 
-    public Surroundings(MapElement north, MapElement east, MapElement south, MapElement west) {
-        this.north = north;
-        this.east = east;
-        this.south = south;
-        this.west = west;
+    public Surroundings(MapElement up, MapElement right, MapElement down, MapElement left) {
+        this.up = up;
+        this.right = right;
+        this.down = down;
+        this.left = left;
     }
 
-    public MapElement getNorth() {
-        return north;
+    public MapElement getUp() {
+        return up;
     }
 
-    public MapElement getEast() {
-        return east;
+    public MapElement getRight() {
+        return right;
     }
 
-    public MapElement getSouth() {
-        return south;
+    public MapElement getDown() {
+        return down;
     }
 
-    public MapElement getWest() {
-        return west;
+    public MapElement getLeft() {
+        return left;
     }
 
     @Override
     public String toString() {
-        return "North of you is " + north.getFriendlyName()
-                + ", east is " + east.getFriendlyName()
-                + ", down south is " + south.getFriendlyName()
-                + ", and west is " + west.getFriendlyName();
+        return "Up is " + up.getFriendlyName()
+                + ", right is " + right.getFriendlyName()
+                + ", down is " + down.getFriendlyName()
+                + ", and left is " + left.getFriendlyName();
     }
 }
