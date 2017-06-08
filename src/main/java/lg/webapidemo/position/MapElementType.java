@@ -1,7 +1,7 @@
 package lg.webapidemo.position;
 
 enum MapElementType {
-    EMPTY(".", "nothing"), WALL("x", "a wall"), GOAL("g", "the goal"), PLAYER("p", "nothing");
+    EMPTY(".", "nothing"), WALL("x", "a wall"), GOAL("g", "the goal"), PLAYER("p", "nothing"), DOOR("d", "a door");
 
     private String mapNotation;
     private String friendlyName;
