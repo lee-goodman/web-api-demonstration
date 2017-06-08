@@ -1,26 +1,30 @@
 package lg.webapidemo.position;
 
-enum MapElement {
-    EMPTY(".", "nothing"), WALL("x", "a wall"), GOAL("g", "the goal"), PLAYER("p", "nothing");
+import java.util.Optional;
 
-    private String mapNotation;
-    private String friendlyName;
+public class MapElement {
 
-    MapElement(String mapNotation, String friendlyName) {
-        this.mapNotation = mapNotation;
-        this.friendlyName = friendlyName;
-    }
+    private Optional<String> id = Optional.empty();
+    private MapElementType type;
 
-    static MapElement fromMapNotationElement(String element) {
-        for (MapElement mapElement : MapElement.values()) {
-            if (mapElement.mapNotation.equals(element)) {
-                return mapElement;
-            }
+    MapElement(String mapNotationElement) {
+        String[] element = mapNotationElement.split("-");
+        type = MapElementType.fromMapNotationElement(element[0]);
+        if(element.length > 1) {
+            id = Optional.of(element[1]);
         }
-        return null;
     }
 
-    public String getFriendlyName() {
-        return friendlyName;
+    String getFriendlyName() {
+        String name = type.getFriendlyName();
+        if(id.isPresent()) {
+            name += " called " + id;
+        }
+        return name;
     }
+
+    Boolean isA(MapElementType type) {
+        return this.type == type;
+    }
+
 }

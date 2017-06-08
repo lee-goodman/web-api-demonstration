@@ -19,24 +19,24 @@ public class Map {
         ClassPathResource resource = new ClassPathResource("maps/map_" + levelNumber + ".map");
 
         map = CharStreams.readLines(new InputStreamReader(resource.getInputStream())).stream().map(
-                row -> Arrays.stream(row.split("\\s")).map(MapElement::fromMapNotationElement).collect(toList())
+                row -> Arrays.stream(row.split("\\s+")).map(MapElement::new).collect(toList())
             ).collect(toList());
     }
 
     public Point playerStartingPosition() {
-        return getPositionOfElement(MapElement.PLAYER);
+        return getPositionOfElement(MapElementType.PLAYER);
     }
 
     public Distance distanceToGoal(Point playerPosition) {
-        return Distance.between(playerPosition, getPositionOfElement(MapElement.GOAL));
+        return Distance.between(playerPosition, getPositionOfElement(MapElementType.GOAL));
     }
 
     public Boolean isAtGoal(Point playerPosition) {
-        return getMapElementAtPoint(playerPosition).equals(MapElement.GOAL);
+        return getMapElementAtPoint(playerPosition).isA(MapElementType.GOAL);
     }
 
     public Boolean isIllegalPlayerPosition(Point playerPosition) {
-        return getMapElementAtPoint(playerPosition).equals(MapElement.WALL);
+        return getMapElementAtPoint(playerPosition).isA(MapElementType.WALL);
     }
 
     public Surroundings getPlayerSurroundings(Point playerPosition) {
@@ -55,11 +55,13 @@ public class Map {
         return map.get(point.getY()).get(point.getX());
     }
 
-    private Point getPositionOfElement(MapElement element) {
+    private Point getPositionOfElement(MapElementType element) {
         for (int yIndex = 0; yIndex < map.size(); yIndex++) {
-            Integer xIndex = map.get(yIndex).indexOf(element);
-            if(xIndex > -1) {
-                return new Point(xIndex, yIndex);
+            List<MapElement> row = map.get(yIndex);
+            for (int xIndex = 0; xIndex < row.size(); xIndex++) {
+                if(row.get(xIndex).isA(element)) {
+                    return new Point(xIndex, yIndex);
+                }
             }
         }
         return null;

@@ -6,6 +6,7 @@ import lg.webapidemo.position.Direction;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.PostConstruct;
 import java.util.concurrent.TimeUnit;
 
 @RestController
@@ -14,8 +15,8 @@ public class GameController {
     private Cache<String, Game> games = CacheBuilder.newBuilder().expireAfterAccess(4, TimeUnit.HOURS).build();
 
     @PostMapping("/newGame")
-    public String startNewGame(@RequestParam String gameId) throws Exception {
-        games.put(gameId, new Game(gameId,1));
+    public String startNewGame(@RequestParam String gameId, @RequestParam(defaultValue = "1") Integer level) throws Exception {
+        games.put(gameId, new Game(gameId, level));
         return "Started game : \"" + gameId + "\"";
     }
 
