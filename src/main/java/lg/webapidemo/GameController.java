@@ -3,6 +3,7 @@ package lg.webapidemo;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import lg.webapidemo.position.Direction;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,17 +17,22 @@ public class GameController {
 
     @PostMapping("/newGame")
     public String startNewGame(@RequestParam String gameId, @RequestParam(defaultValue = "1") Integer level) throws Exception {
-        games.put(gameId, new Game(gameId, level));
-        return "Started game : \"" + gameId + "\"";
+        Game game = new Game(gameId, level);
+        games.put(gameId, game);
+        return "Started game : \"" + gameId + "\" on level " + level + "" + game.toString();
     }
 
     @PostMapping("/move")
     public ResponseEntity<String> movePlayer(@RequestParam String gameId, @RequestParam Direction direction) {
-        Boolean moveSuccess = getGame(gameId).move(direction);
+        Game game = getGame(gameId);
+        Boolean moveSuccess = game.move(direction);
 
-        ResponseEntity<String> response = ResponseEntity.ok("Player has moved!");
+        ResponseEntity<String> response = ResponseEntity.ok(game.isPlayerBlind() ? "" : "Player has moved!");
         if(!moveSuccess) {
-            response = ResponseEntity.badRequest().body("Cannot move in that direction!");
+            response = ResponseEntity.badRequest().body(game.isPlayerBlind() ? "" : "Cannot move in that direction!");
+        }
+        if(game.isGameComplete()) {
+            response = ResponseEntity.ok("Well done, level completed!");
         }
         return response;
     }
@@ -41,11 +47,6 @@ public class GameController {
         return getGame(gameId).getPlayerSurroundings().toString();
     }
 
-    @GetMapping("/status")
-    public String getGameStatus(@RequestParam String gameId) {
-        return "Game is " + (getGame(gameId).isGameComplete() ? "complete" : "incomplete");
-    }
-
     private Game getGame(String gameId) {
         Game game = games.getIfPresent(gameId);
         if(game == null) {
@@ -55,7 +56,17 @@ public class GameController {
     }
 
     @ExceptionHandler(GameNotFoundException.class)
-    public String handleGameNotFoundException(GameNotFoundException exception) {
-        return exception.getMessage();
+    public ResponseEntity<String> handleGameNotFoundException(GameNotFoundException exception) {
+        return new ResponseEntity<>(exception.getMessage(), HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(PlayerBlindException.class)
+    public ResponseEntity<String> handlePlayerBlindException() {
+        return ResponseEntity.badRequest().body("You are blind, you can't do that!");
+    }
+
+    @ExceptionHandler(GameCompleteException.class)
+    public ResponseEntity<String> handleGameCompleteException() {
+        return new ResponseEntity<>("Level is complete, you need to start a new game!", HttpStatus.GONE);
     }
 }
