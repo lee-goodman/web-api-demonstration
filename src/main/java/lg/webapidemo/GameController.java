@@ -3,11 +3,14 @@ package lg.webapidemo;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import lg.webapidemo.position.Direction;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.PostConstruct;
+import java.io.FileNotFoundException;
 import java.util.concurrent.TimeUnit;
 
 @RestController
@@ -32,7 +35,7 @@ public class GameController {
             response = ResponseEntity.badRequest().body(game.isPlayerBlind() ? "" : "Cannot move in that direction!");
         }
         if(game.isGameComplete()) {
-            response = ResponseEntity.ok("Well done, level completed!");
+            response = ResponseEntity.ok("Well done, level completed in " + game.getMoveCount() + " moves!");
         }
         return response;
     }
@@ -52,6 +55,9 @@ public class GameController {
         if(game == null) {
             throw new GameNotFoundException("Game " + gameId + " does not exist!");
         }
+        if(game.isGameBroken()) {
+            throw new GameBrokenException("Request to backend failed: MySQL syntax error at 'SELECT * FREM'");
+        }
         return game;
     }
 
@@ -69,4 +75,10 @@ public class GameController {
     public ResponseEntity<String> handleGameCompleteException() {
         return new ResponseEntity<>("Level is complete, you need to start a new game!", HttpStatus.GONE);
     }
+
+    @ExceptionHandler(FileNotFoundException.class)
+    public ResponseEntity<String> handleFileNotFoundException() {
+        return new ResponseEntity<>("Level does not exist!", HttpStatus.NOT_FOUND);
+    }
+
 }

@@ -13,12 +13,15 @@ public class Game {
 
     private Map map;
     private Point playerPosition;
+    private Integer moveCount = 0;
     private Boolean playerIsBlind;
+    private Boolean gameIsBroken;
 
     public Game(String gameId, Integer level) throws URISyntaxException, IOException {
         this.map = new Map(level);
         this.playerPosition = this.map.playerStartingPosition();
         this.playerIsBlind = level.equals(2);
+        this.gameIsBroken = level.equals(3);
         LOG.info("Game '{}' started, level {}, player is at {}", gameId, level, this.playerPosition);
     }
 
@@ -55,11 +58,20 @@ public class Game {
             return false;
         }
         playerPosition = newPosition;
+        moveCount++;
         return true;
     }
 
     Boolean isPlayerBlind() {
         return playerIsBlind;
+    }
+
+    Boolean isGameBroken() {
+        return gameIsBroken && moveCount > 2;
+    }
+
+    Integer getMoveCount() {
+        return moveCount;
     }
 
     @Override
