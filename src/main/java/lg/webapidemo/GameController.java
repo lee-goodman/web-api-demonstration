@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.PostConstruct;
 import java.io.FileNotFoundException;
+import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
 @RestController
@@ -28,11 +29,11 @@ public class GameController {
     @PostMapping("/move")
     public ResponseEntity<String> movePlayer(@RequestParam String gameId, @RequestParam Direction direction) {
         Game game = getGame(gameId);
-        Boolean moveSuccess = game.move(direction);
+        Optional<Blocker> movementBlocker = game.move(direction);
 
         ResponseEntity<String> response = ResponseEntity.ok(game.isPlayerBlind() ? "" : "Player has moved!");
-        if(!moveSuccess) {
-            response = ResponseEntity.badRequest().body(game.isPlayerBlind() ? "" : "Cannot move in that direction!");
+        if(movementBlocker.isPresent()) {
+            response = ResponseEntity.badRequest().body(game.isPlayerBlind() ? "" : "Cannot move in that direction, there is " + movementBlocker.get() + " in the way!");
         }
         if(game.isGameComplete()) {
             response = ResponseEntity.ok("Well done, level completed in " + game.getMoveCount() + " moves!");
@@ -48,6 +49,12 @@ public class GameController {
     @GetMapping("/surroundings")
     public String getSurroundings(@RequestParam String gameId) {
         return getGame(gameId).getPlayerSurroundings().toString();
+    }
+
+    @PostMapping("/open/{doorId}")
+    public String openDoor(@PathVariable String doorId, @RequestParam String gameId) {
+        getGame(gameId).openDoor(doorId);
+        return "The door is now open";
     }
 
     private Game getGame(String gameId) {
@@ -79,6 +86,11 @@ public class GameController {
     @ExceptionHandler(FileNotFoundException.class)
     public ResponseEntity<String> handleFileNotFoundException() {
         return new ResponseEntity<>("Level does not exist!", HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(NoSuchObjectException.class)
+    public ResponseEntity<String> handleNoSuchObjectException(NoSuchObjectException exception) {
+        return new ResponseEntity<>("No object called '" + exception.getObjectId() + "' exists!", HttpStatus.NOT_FOUND);
     }
 
 }

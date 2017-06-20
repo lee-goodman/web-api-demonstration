@@ -1,11 +1,14 @@
 package lg.webapidemo;
 
+import com.google.common.collect.ImmutableMap;
 import lg.webapidemo.position.*;
+import lg.webapidemo.position.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.util.*;
 
 public class Game {
 
@@ -16,6 +19,9 @@ public class Game {
     private Integer moveCount = 0;
     private Boolean playerIsBlind;
     private Boolean gameIsBroken;
+    private java.util.Map<String, Door> doors = ImmutableMap.<String,Door>builder()
+            .put("door1", new Door())
+            .build();
 
     public Game(String gameId, Integer level) throws URISyntaxException, IOException {
         this.map = new Map(level);
@@ -49,17 +55,17 @@ public class Game {
         return map.getPlayerSurroundings(playerPosition);
     }
 
-    public Boolean move(Direction direction) {
+    public Optional<Blocker> move(Direction direction) {
         if(isGameComplete()) {
             throw new GameCompleteException();
         }
         Point newPosition = playerPosition.translate(direction);
-        if(map.isIllegalPlayerPosition(newPosition)) {
-            return false;
+        Optional<Blocker> blocker = map.isIllegalPlayerPosition(newPosition, doors);
+        if(!blocker.isPresent()) {
+            playerPosition = newPosition;
+            moveCount++;
         }
-        playerPosition = newPosition;
-        moveCount++;
-        return true;
+        return blocker;
     }
 
     Boolean isPlayerBlind() {
@@ -72,6 +78,14 @@ public class Game {
 
     Integer getMoveCount() {
         return moveCount;
+    }
+
+    void openDoor(String doorId) {
+        Door door = doors.get(doorId);
+        if(door == null) {
+            throw new NoSuchObjectException(doorId);
+        }
+        door.open();
     }
 
     @Override

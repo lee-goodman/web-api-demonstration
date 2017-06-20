@@ -15,6 +15,10 @@ public class MapElement {
         }
     }
 
+    Optional<String> getId() {
+        return id;
+    }
+
     String getFriendlyName() {
         String name = type.getFriendlyName();
         if(id.isPresent()) {
@@ -25,6 +29,13 @@ public class MapElement {
 
     Boolean isA(MapElementType type) {
         return this.type == type;
+    }
+
+    Optional<MapElementType> getBlockingObject() {
+        if(!type.isPassable()) {
+            return Optional.of(type);
+        }
+        return Optional.empty();
     }
 
 }

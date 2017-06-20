@@ -1,6 +1,8 @@
 package lg.webapidemo.position;
 
 import com.google.common.io.CharStreams;
+import lg.webapidemo.Blocker;
+import lg.webapidemo.Door;
 import org.springframework.core.io.ClassPathResource;
 
 import java.io.IOException;
@@ -8,6 +10,7 @@ import java.io.InputStreamReader;
 import java.net.URISyntaxException;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 import static java.util.stream.Collectors.toList;
 
@@ -35,8 +38,18 @@ public class Map {
         return getMapElementAtPoint(playerPosition).isA(MapElementType.GOAL);
     }
 
-    public Boolean isIllegalPlayerPosition(Point playerPosition) {
-        return getMapElementAtPoint(playerPosition).isA(MapElementType.WALL);
+    public Optional<Blocker> isIllegalPlayerPosition(Point playerPosition, java.util.Map<String, Door> doors) {
+        MapElement mapElement = getMapElementAtPoint(playerPosition);
+        Optional<MapElementType> blockingObject = mapElement.getBlockingObject();
+        if(blockingObject.isPresent()) {
+            if(blockingObject.get() == MapElementType.DOOR) {
+                if(doors.get(mapElement.getId().get()).isClosed()) {
+                    return Optional.of(new Blocker(blockingObject.get().getFriendlyName()));
+                }
+            }
+            return Optional.of(new Blocker(blockingObject.get().getFriendlyName()));
+        }
+        return Optional.empty();
     }
 
     public Surroundings getPlayerSurroundings(Point playerPosition) {
