@@ -33,7 +33,7 @@ public class GameController {
 
         ResponseEntity<String> response = ResponseEntity.ok(game.isPlayerBlind() ? "" : "Player has moved!");
         if(movementBlocker.isPresent()) {
-            response = ResponseEntity.badRequest().body(game.isPlayerBlind() ? "" : "Cannot move in that direction, there is " + movementBlocker.get() + " in the way!");
+            response = ResponseEntity.badRequest().body(game.isPlayerBlind() ? "" : "Cannot move in that direction; " + movementBlocker.get());
         }
         if(game.isGameComplete()) {
             response = ResponseEntity.ok("Well done, level completed in " + game.getMoveCount() + " moves!");

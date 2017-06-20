@@ -21,6 +21,8 @@ public class Game {
     private Boolean gameIsBroken;
     private java.util.Map<String, Door> doors = ImmutableMap.<String,Door>builder()
             .put("door1", new Door())
+            .put("door2", new Door())
+            .put("door3", new Door())
             .build();
 
     public Game(String gameId, Integer level) throws URISyntaxException, IOException {

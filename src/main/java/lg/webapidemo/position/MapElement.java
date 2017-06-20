@@ -22,7 +22,7 @@ public class MapElement {
     String getFriendlyName() {
         String name = type.getFriendlyName();
         if(id.isPresent()) {
-            name += " called " + id;
+            name += " called '" + id.get() + "'";
         }
         return name;
     }

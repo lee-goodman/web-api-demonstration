@@ -44,10 +44,11 @@ public class Map {
         if(blockingObject.isPresent()) {
             if(blockingObject.get() == MapElementType.DOOR) {
                 if(doors.get(mapElement.getId().get()).isClosed()) {
-                    return Optional.of(new Blocker(blockingObject.get().getFriendlyName()));
+                    return Optional.of(new Blocker(blockingObject.get().getFriendlyName(), mapElement.getId()));
                 }
+            } else {
+                return Optional.of(new Blocker(blockingObject.get().getFriendlyName()));
             }
-            return Optional.of(new Blocker(blockingObject.get().getFriendlyName()));
         }
         return Optional.empty();
     }
