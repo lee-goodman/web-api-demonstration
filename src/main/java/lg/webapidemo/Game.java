@@ -90,6 +90,10 @@ public class Game {
         door.open();
     }
 
+    Set<String> getDoors() {
+        return doors.keySet();
+    }
+
     @Override
     public String toString() {
         return playerIsBlind ? "...oh and by the way, you are blind in this level!" : "";

@@ -51,7 +51,12 @@ public class GameController {
         return getGame(gameId).getPlayerSurroundings().toString();
     }
 
-    @PostMapping("/open/{doorId}")
+    @GetMapping("/doors/")
+    public DoorsResponse getDoors(@RequestParam String gameId) {
+        return new DoorsResponse(getGame(gameId).getDoors());
+    }
+
+    @PostMapping("/doors/{doorId}/open")
     public String openDoor(@PathVariable String doorId, @RequestParam String gameId) {
         getGame(gameId).openDoor(doorId);
         return "The door is now open";
