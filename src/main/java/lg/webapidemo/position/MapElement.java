@@ -38,4 +38,8 @@ public class MapElement {
         return Optional.empty();
     }
 
+    @Override
+    public String toString() {
+        return (id.isPresent() ? id.get() + "-" : "") + type;
+    }
 }
