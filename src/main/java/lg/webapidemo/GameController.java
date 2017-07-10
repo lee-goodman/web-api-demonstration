@@ -7,9 +7,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.crypto.codec.Base64;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.PostConstruct;
+import javax.servlet.http.HttpServletRequest;
 import java.io.FileNotFoundException;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
@@ -57,9 +62,19 @@ public class GameController {
     }
 
     @PostMapping("/doors/{doorId}/open")
-    public String openDoor(@PathVariable String doorId, @RequestParam String gameId) {
-        getGame(gameId).openDoor(doorId);
+    public String openDoor(@PathVariable String doorId, @RequestParam String gameId, HttpServletRequest request) {
+        Game game = getGame(gameId);
+        game.openDoor(doorId, getAuth(request));
         return "The door is now open";
+    }
+
+    private UsernamePasswordAuthenticationToken getAuth(HttpServletRequest request) {
+        String auth = request.getHeader("Authorization");
+        if(auth != null && auth.startsWith("Basic ")) {
+            String[] creds = new String(Base64.decode(auth.replace("Basic ", "").getBytes())).split(":");
+            return new UsernamePasswordAuthenticationToken(creds[0], creds[1]);
+        }
+        throw new AuthenticationCredentialsNotFoundException("The door is locked, you need to provide credentials to get in!");
     }
 
     private Game getGame(String gameId) {
@@ -96,6 +111,11 @@ public class GameController {
     @ExceptionHandler(NoSuchObjectException.class)
     public ResponseEntity<String> handleNoSuchObjectException(NoSuchObjectException exception) {
         return new ResponseEntity<>("No object called '" + exception.getObjectId() + "' exists!", HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(AuthenticationException.class)
+    public ResponseEntity<String> handleAuthenticationException(AuthenticationException exception) {
+        return new ResponseEntity<>(exception.getMessage(), HttpStatus.UNAUTHORIZED);
     }
 
 }

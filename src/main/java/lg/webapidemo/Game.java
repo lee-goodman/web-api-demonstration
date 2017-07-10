@@ -5,6 +5,9 @@ import lg.webapidemo.position.*;
 import lg.webapidemo.position.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.AuthenticationException;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -82,7 +85,10 @@ public class Game {
         return moveCount;
     }
 
-    void openDoor(String doorId) {
+    void openDoor(String doorId, UsernamePasswordAuthenticationToken credentials) {
+        if(!map.canOpenDoor(doorId, credentials)) {
+            throw new BadCredentialsException("Incorrect details specified for door '" + doorId + "'!");
+        }
         Door door = doors.get(doorId);
         if(door == null) {
             throw new NoSuchObjectException(doorId);

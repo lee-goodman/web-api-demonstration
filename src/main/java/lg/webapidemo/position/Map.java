@@ -9,6 +9,7 @@ import lg.webapidemo.Door;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -101,6 +102,10 @@ public class Map {
             }
         }
         return null;
+    }
+
+    public Boolean canOpenDoor(String doorId, UsernamePasswordAuthenticationToken credentials) {
+        return metadata.canOpenDoor(doorId, credentials);
     }
 
     @Override

@@ -1,5 +1,7 @@
 package lg.webapidemo.position;
 
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+
 public class DoorData {
 
     private String username;
@@ -11,6 +13,10 @@ public class DoorData {
 
     public String getPassword() {
         return password;
+    }
+
+    Boolean matchCredentials(UsernamePasswordAuthenticationToken credentials) {
+        return username.equals(credentials.getName()) && password.equals(credentials.getCredentials());
     }
 
     @Override
