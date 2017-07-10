@@ -25,6 +25,10 @@ public class MapMetadata {
         return false;
     }
 
+    public Set<String> availableDoors() {
+        return doors.keySet();
+    }
+
     @Override
     public String toString() {
         return "{" +

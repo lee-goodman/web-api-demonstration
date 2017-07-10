@@ -17,9 +17,11 @@ import java.net.URISyntaxException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import static java.util.stream.Collectors.toList;
+import static java.util.stream.Collectors.toMap;
 
 public class Map {
 
@@ -106,6 +108,10 @@ public class Map {
 
     public Boolean canOpenDoor(String doorId, UsernamePasswordAuthenticationToken credentials) {
         return metadata.canOpenDoor(doorId, credentials);
+    }
+
+    public java.util.Map<String, Door> createDoorInstances() {
+        return metadata.availableDoors().stream().collect(toMap(Function.identity(), doorId -> new Door()));
     }
 
     @Override

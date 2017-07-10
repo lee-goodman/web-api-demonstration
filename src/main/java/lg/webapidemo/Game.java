@@ -22,17 +22,14 @@ public class Game {
     private Integer moveCount = 0;
     private Boolean playerIsBlind;
     private Boolean gameIsBroken;
-    private java.util.Map<String, Door> doors = ImmutableMap.<String,Door>builder()
-            .put("door1", new Door())
-            .put("door2", new Door())
-            .put("door3", new Door())
-            .build();
+    private java.util.Map<String, Door> doors;
 
     public Game(String gameId, Integer level) throws URISyntaxException, IOException {
         this.map = new Map(level);
         this.playerPosition = this.map.playerStartingPosition();
         this.playerIsBlind = level.equals(2);
         this.gameIsBroken = level.equals(3);
+        this.doors = this.map.createDoorInstances();
         LOG.info("Game '{}' started, level {}, player is at {}", gameId, level, this.playerPosition);
     }
 
