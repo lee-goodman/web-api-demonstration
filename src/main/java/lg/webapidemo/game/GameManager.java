@@ -1,4 +1,4 @@
-package lg.webapidemo;
+package lg.webapidemo.game;
 
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;

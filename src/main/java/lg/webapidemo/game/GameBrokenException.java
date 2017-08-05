@@ -1,4 +1,4 @@
-package lg.webapidemo;
+package lg.webapidemo.game;
 
 public class GameBrokenException extends RuntimeException {
 

@@ -1,5 +1,8 @@
-package lg.webapidemo;
+package lg.webapidemo.game;
 
+import lg.webapidemo.NoSuchObjectException;
+import lg.webapidemo.player.Player;
+import lg.webapidemo.player.PlayerBlindException;
 import lg.webapidemo.objects.Blocker;
 import lg.webapidemo.objects.Door;
 import lg.webapidemo.position.*;
@@ -82,7 +85,7 @@ public class Game {
         return moveCount;
     }
 
-    void openDoor(String doorId, UsernamePasswordAuthenticationToken credentials) {
+    public void openDoor(String doorId, UsernamePasswordAuthenticationToken credentials) {
         if(!map.canOpenDoor(doorId, credentials)) {
             throw new BadCredentialsException("Incorrect details specified for door '" + doorId + "'!");
         }
@@ -93,7 +96,7 @@ public class Game {
         door.open();
     }
 
-    Set<String> getDoors() {
+    public Set<String> getDoors() {
         return doors.keySet();
     }
 

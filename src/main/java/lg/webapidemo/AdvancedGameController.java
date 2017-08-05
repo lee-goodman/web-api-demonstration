@@ -1,6 +1,8 @@
 package lg.webapidemo;
 
+import lg.webapidemo.game.*;
 import lg.webapidemo.objects.Blocker;
+import lg.webapidemo.player.PlayerBlindException;
 import lg.webapidemo.position.Direction;
 import lg.webapidemo.position.Distance;
 import lg.webapidemo.position.Surroundings;

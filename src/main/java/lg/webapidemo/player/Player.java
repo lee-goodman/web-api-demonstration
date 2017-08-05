@@ -1,4 +1,4 @@
-package lg.webapidemo;
+package lg.webapidemo.player;
 
 import lg.webapidemo.objects.Item;
 import lg.webapidemo.position.Point;

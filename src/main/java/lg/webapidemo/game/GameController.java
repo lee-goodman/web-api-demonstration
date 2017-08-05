@@ -1,7 +1,8 @@
-package lg.webapidemo;
+package lg.webapidemo.game;
 
-import com.google.common.cache.Cache;
-import com.google.common.cache.CacheBuilder;
+import lg.webapidemo.DoorsResponse;
+import lg.webapidemo.NoSuchObjectException;
+import lg.webapidemo.player.PlayerBlindException;
 import lg.webapidemo.objects.Blocker;
 import lg.webapidemo.position.Direction;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +17,6 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import java.io.FileNotFoundException;
 import java.util.Optional;
-import java.util.concurrent.TimeUnit;
 
 @RestController
 public class GameController {
