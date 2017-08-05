@@ -2,9 +2,9 @@ package lg.webapidemo;
 
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
+import lg.webapidemo.objects.Blocker;
 import lg.webapidemo.position.Direction;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
@@ -13,7 +13,6 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.codec.Base64;
 import org.springframework.web.bind.annotation.*;
 
-import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
 import java.io.FileNotFoundException;
 import java.util.Optional;
@@ -22,18 +21,18 @@ import java.util.concurrent.TimeUnit;
 @RestController
 public class GameController {
 
-    private Cache<String, Game> games = CacheBuilder.newBuilder().expireAfterAccess(4, TimeUnit.HOURS).build();
+    @Autowired
+    private GameManager gameManager;
 
     @PostMapping("/newGame")
     public String startNewGame(@RequestParam String gameId, @RequestParam(defaultValue = "1") Integer level) throws Exception {
-        Game game = new Game(gameId, level);
-        games.put(gameId, game);
-        return "Started game : \"" + gameId + "\" on level " + level + "" + game.toString();
+        GameSummary summary = gameManager.newGame(gameId, level);
+        return summary.toString();
     }
 
     @PostMapping("/move")
     public ResponseEntity<String> movePlayer(@RequestParam String gameId, @RequestParam Direction direction) {
-        Game game = getGame(gameId);
+        Game game = gameManager.getGame(gameId);
         Optional<Blocker> movementBlocker = game.move(direction);
 
         ResponseEntity<String> response = ResponseEntity.ok(game.isPlayerBlind() ? "" : "Player has moved!");
@@ -48,22 +47,22 @@ public class GameController {
 
     @GetMapping("/distance")
     public String getDistanceToObjective(@RequestParam String gameId) {
-        return getGame(gameId).getDistanceToGoal().toString();
+        return gameManager.getGame(gameId).getDistanceToGoal().toString();
     }
 
     @GetMapping("/surroundings")
     public String getSurroundings(@RequestParam String gameId) {
-        return getGame(gameId).getPlayerSurroundings().toString();
+        return gameManager.getGame(gameId).getPlayerSurroundings().toString();
     }
 
     @GetMapping("/doors/")
     public DoorsResponse getDoors(@RequestParam String gameId) {
-        return new DoorsResponse(getGame(gameId).getDoors());
+        return new DoorsResponse(gameManager.getGame(gameId).getDoors());
     }
 
     @PostMapping("/doors/{doorId}/open")
     public String openDoor(@PathVariable String doorId, @RequestParam String gameId, HttpServletRequest request) {
-        Game game = getGame(gameId);
+        Game game = gameManager.getGame(gameId);
         game.openDoor(doorId, getAuth(request));
         return "The door is now open";
     }
@@ -75,17 +74,6 @@ public class GameController {
             return new UsernamePasswordAuthenticationToken(creds[0], creds[1]);
         }
         throw new AuthenticationCredentialsNotFoundException("The door is locked, you need to provide credentials to get in!");
-    }
-
-    private Game getGame(String gameId) {
-        Game game = games.getIfPresent(gameId);
-        if(game == null) {
-            throw new GameNotFoundException("Game " + gameId + " does not exist!");
-        }
-        if(game.isGameBroken()) {
-            throw new GameBrokenException("Request to backend failed: MySQL syntax error at 'SELECT * FREM'");
-        }
-        return game;
     }
 
     @ExceptionHandler(GameNotFoundException.class)

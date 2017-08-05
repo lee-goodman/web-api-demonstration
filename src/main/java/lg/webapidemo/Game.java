@@ -1,13 +1,13 @@
 package lg.webapidemo;
 
-import com.google.common.collect.ImmutableMap;
+import lg.webapidemo.objects.Blocker;
+import lg.webapidemo.objects.Door;
 import lg.webapidemo.position.*;
 import lg.webapidemo.position.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.AuthenticationException;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -18,60 +18,60 @@ public class Game {
     private static final Logger LOG = LoggerFactory.getLogger(Game.class);
 
     private Map map;
-    private Point playerPosition;
+    private Player player;
+
     private Integer moveCount = 0;
-    private Boolean playerIsBlind;
     private Boolean gameIsBroken;
     private java.util.Map<String, Door> doors;
 
     public Game(String gameId, Integer level) throws URISyntaxException, IOException {
         this.map = new Map(level);
-        this.playerPosition = this.map.playerStartingPosition();
-        this.playerIsBlind = level.equals(2);
+        this.player = new Player(this.map.playerStartingPosition(), level.equals(2));
+
         this.gameIsBroken = level.equals(3);
         this.doors = this.map.createDoorInstances();
-        LOG.info("Game '{}' started, level {}, player is at {}", gameId, level, this.playerPosition);
+        LOG.info("Game '{}' started, level {}, player is at {}", gameId, level, this.player.getPosition());
     }
 
     public Boolean isGameComplete() {
-        return map.isAtGoal(playerPosition);
+        return map.isAtGoal(player.getPosition());
     }
 
     public Distance getDistanceToGoal() {
         if(isGameComplete()) {
             throw new GameCompleteException();
         }
-        if(playerIsBlind) {
+        if(player.isBlind()) {
             throw new PlayerBlindException();
         }
-        return map.distanceToGoal(playerPosition);
+        return map.distanceToGoal(player.getPosition());
     }
 
     public Surroundings getPlayerSurroundings() {
         if(isGameComplete()) {
             throw new GameCompleteException();
         }
-        if(playerIsBlind) {
+        if(player.isBlind()) {
             throw new PlayerBlindException();
         }
-        return map.getPlayerSurroundings(playerPosition);
+        return map.getPlayerSurroundings(player.getPosition());
     }
 
     public Optional<Blocker> move(Direction direction) {
         if(isGameComplete()) {
             throw new GameCompleteException();
         }
-        Point newPosition = playerPosition.translate(direction);
+        Point newPosition = player.getPosition().translate(direction);
         Optional<Blocker> blocker = map.isIllegalPlayerPosition(newPosition, doors);
         if(!blocker.isPresent()) {
-            playerPosition = newPosition;
+            player.setPosition(newPosition);
             moveCount++;
         }
         return blocker;
     }
 
     Boolean isPlayerBlind() {
-        return playerIsBlind;
+        return player.isBlind();
     }
 
     Boolean isGameBroken() {
@@ -99,6 +99,6 @@ public class Game {
 
     @Override
     public String toString() {
-        return playerIsBlind ? "...oh and by the way, you are blind in this level!" : "";
+        return player.isBlind() ? "...oh and by the way, you are blind in this level!" : null;
     }
 }

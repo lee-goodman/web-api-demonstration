@@ -1,4 +1,6 @@
-package lg.webapidemo;
+package lg.webapidemo.objects;
+
+import lg.webapidemo.BlockerResponse;
 
 import java.util.Optional;
 
@@ -14,6 +16,10 @@ public class Blocker {
     public Blocker(String friendlyName, Optional<String> objectId) {
         this.friendlyName = friendlyName;
         this.objectId = objectId;
+    }
+
+    public BlockerResponse asResponse() {
+        return new BlockerResponse(friendlyName, objectId.orElse(null));
     }
 
     @Override

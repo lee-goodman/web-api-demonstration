@@ -1,11 +1,9 @@
 package lg.webapidemo.position;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.common.collect.Lists;
 import com.google.common.io.CharStreams;
-import lg.webapidemo.Blocker;
-import lg.webapidemo.Door;
+import lg.webapidemo.objects.Blocker;
+import lg.webapidemo.objects.Door;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.io.ClassPathResource;

@@ -1,4 +1,4 @@
-package lg.webapidemo;
+package lg.webapidemo.objects;
 
 public class Door {
 
