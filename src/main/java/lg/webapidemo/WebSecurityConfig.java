@@ -11,7 +11,12 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
+
+import java.util.HashMap;
+import java.util.Map;
 
 @Configuration
 @EnableWebSecurity
@@ -34,7 +39,20 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Bean
     public InMemoryUserDetailsManager inMemoryUserDetailsManager() {
-        InMemoryUserDetailsManager manager = new InMemoryUserDetailsManager();
+        InMemoryUserDetailsManager manager = new InMemoryUserDetailsManager() {
+            private Map<String, ForumUser> secondaryStore = new HashMap<>();
+
+            @Override
+            public void createUser(UserDetails user) {
+                super.createUser(user);
+                this.secondaryStore.put(user.getUsername().toLowerCase(), (ForumUser) user);
+            }
+
+            @Override
+            public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+                return secondaryStore.get(username.toLowerCase());
+            }
+        };
         manager.createUser(ForumUser.ADMIN);
         return manager;
     }

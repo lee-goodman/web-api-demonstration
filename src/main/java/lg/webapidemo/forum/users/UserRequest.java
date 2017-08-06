@@ -26,7 +26,7 @@ public class UserRequest {
     public String toString() {
         return "UserRequest{" +
                 "username='" + username + '\'' +
-                ", password='" + password + '\'' +
+                ", password='REDACTED'" +
                 ", displayName='" + displayName + '\'' +
                 '}';
     }

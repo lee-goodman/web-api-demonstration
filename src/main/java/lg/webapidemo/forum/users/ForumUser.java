@@ -21,4 +21,8 @@ public class ForumUser extends User {
         super(request.getUsername(), request.getPassword(), Collections.emptyList());
         this.displayName = request.getDisplayName();
     }
+
+    public String getDisplayName() {
+        return displayName;
+    }
 }
