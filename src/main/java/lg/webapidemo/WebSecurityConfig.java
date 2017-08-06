@@ -50,7 +50,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
             @Override
             public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-                return secondaryStore.get(username.toLowerCase());
+                return secondaryStore.get(username.toLowerCase()).clone();
             }
         };
         manager.createUser(ForumUser.ADMIN);

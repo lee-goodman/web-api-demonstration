@@ -25,4 +25,8 @@ public class ForumUser extends User {
     public String getDisplayName() {
         return displayName;
     }
+
+    public ForumUser clone() {
+        return new ForumUser(this.getUsername(), this.getPassword(), this.displayName);
+    }
 }

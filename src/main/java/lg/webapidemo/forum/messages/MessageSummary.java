@@ -1,5 +1,7 @@
 package lg.webapidemo.forum.messages;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import java.time.Instant;
 
 public class MessageSummary {
