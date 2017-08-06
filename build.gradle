@@ -31,6 +31,7 @@ dependencies {
 	compile('org.springframework.boot:spring-boot-starter-web')
 
     compile('com.fasterxml.jackson.dataformat:jackson-dataformat-xml')
+    compile('com.fasterxml.jackson.datatype:jackson-datatype-jsr310')
 
     compile('io.springfox:springfox-swagger2:2.7.0')
     compile('io.springfox:springfox-swagger-ui:2.7.0')
