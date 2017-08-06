@@ -9,12 +9,14 @@ public class Message {
     private Integer id;
     private ForumUser user;
     private Instant date;
+    private Instant lastEdit;
     private String message;
 
     public Message(Integer id, ForumUser user, MessageRequest request) {
         this.id = id;
         this.user = user;
         this.date = Instant.now();
+        this.lastEdit = Instant.now();
         this.message = request.getMessage();
     }
 
@@ -23,7 +25,7 @@ public class Message {
     }
 
     public MessageSummary makeSummary() {
-        return new MessageSummary(id, user.getDisplayName(), message);
+        return new MessageSummary(id, user.getDisplayName(), date, lastEdit, message);
     }
 
     public Boolean isOwnedBy(ForumUser user) {
@@ -32,5 +34,6 @@ public class Message {
 
     public void edit(MessageRequest request) {
         this.message = request.getMessage();
+        this.lastEdit = Instant.now();
     }
 }

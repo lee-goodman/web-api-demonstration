@@ -1,14 +1,20 @@
 package lg.webapidemo.forum.messages;
 
+import java.time.Instant;
+
 public class MessageSummary {
 
     private Integer id;
     private String user;
+    private Instant postDate;
+    private Instant editDate;
     private String message;
 
-    public MessageSummary(Integer id, String user, String message) {
+    public MessageSummary(Integer id, String user, Instant postDate, Instant editDate, String message) {
         this.id = id;
         this.user = user;
+        this.postDate = postDate;
+        this.editDate = editDate;
         this.message = message;
     }
 
@@ -18,6 +24,14 @@ public class MessageSummary {
 
     public String getUser() {
         return user;
+    }
+
+    public Instant getPostDate() {
+        return postDate;
+    }
+
+    public Instant getEditDate() {
+        return editDate;
     }
 
     public String getMessage() {
