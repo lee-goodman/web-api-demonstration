@@ -16,6 +16,13 @@ public class TopicSummary {
         this.lastMessageDate = lastMessageDate;
     }
 
+    public TopicSummary(TopicSummary summary) {
+        this.id = summary.id;
+        this.title = summary.title;
+        this.messageCount = summary.messageCount;
+        this.lastMessageDate = summary.lastMessageDate;
+    }
+
     public Integer getId() {
         return id;
     }
@@ -31,4 +38,5 @@ public class TopicSummary {
     public Instant getLastMessageDate() {
         return lastMessageDate;
     }
+
 }

@@ -4,9 +4,7 @@ import com.google.common.base.Predicates;
 import lg.webapidemo.forum.messages.Message;
 import lg.webapidemo.forum.messages.MessageRequest;
 import lg.webapidemo.forum.messages.MessageSummary;
-import lg.webapidemo.forum.topics.Topic;
-import lg.webapidemo.forum.topics.TopicRequest;
-import lg.webapidemo.forum.topics.TopicSummary;
+import lg.webapidemo.forum.topics.*;
 import lg.webapidemo.forum.users.ForumUser;
 import org.springframework.stereotype.Component;
 
@@ -26,7 +24,7 @@ public class Forum {
     private Map<Integer, Topic> topics = new LinkedHashMap<>();
 
     public synchronized TopicSummary createTopic(TopicRequest request) {
-        Topic newTopic = new Topic(topics.size(), request);
+        Topic newTopic = request.toTopic(topics.size());
         topics.put(topics.size(), newTopic);
         return newTopic.makeSummary();
     }
@@ -49,6 +47,10 @@ public class Forum {
 
     public MessageSummary deleteMessage(Integer topicId, Integer messageId) {
         return topics.get(topicId).deleteMessage(messageId);
+    }
+
+    public PollSummary vote(Integer topicId, Integer pollId) throws PollExpiredException {
+        return topics.get(topicId).vote(pollId);
     }
 
     public Boolean userOwnsMessage(ForumUser user, Integer topicId, Integer messageId) {

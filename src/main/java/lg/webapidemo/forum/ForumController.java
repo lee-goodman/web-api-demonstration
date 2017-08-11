@@ -2,13 +2,19 @@ package lg.webapidemo.forum;
 
 import lg.webapidemo.forum.messages.MessageRequest;
 import lg.webapidemo.forum.messages.MessageSummary;
+import lg.webapidemo.forum.topics.PollExpiredException;
+import lg.webapidemo.forum.topics.PollSummary;
 import lg.webapidemo.forum.topics.TopicRequest;
 import lg.webapidemo.forum.topics.TopicSummary;
 import lg.webapidemo.forum.users.ForumUser;
 import lg.webapidemo.forum.users.UserRequest;
+import lg.webapidemo.game.GameCompleteException;
+import lg.webapidemo.game.GameErrorResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -56,6 +62,11 @@ public class ForumController {
     @PostMapping("/topics/{topicId}/messages")
     public MessageSummary addMessage(@PathVariable Integer topicId, @RequestBody MessageRequest message) {
         return forum.addMessage(topicId, getCurrentUser(), message);
+    }
+
+    @PutMapping("/topics/{topicId}/votes/{pollId}")
+    public PollSummary vote(@PathVariable Integer topicId, @PathVariable Integer pollId) throws Exception {
+        return forum.vote(topicId, pollId);
     }
 
     @PutMapping("/topics/{topicId}/messages/{messageId}")

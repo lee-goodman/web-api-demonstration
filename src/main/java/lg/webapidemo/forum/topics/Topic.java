@@ -53,6 +53,10 @@ public class Topic {
         return messages.get(messageId).isOwnedBy(user);
     }
 
+    public PollSummary vote(Integer pollId) throws PollExpiredException {
+        throw new UnsupportedOperationException("This topic is not a poll");
+    }
+
     public TopicSummary makeSummary() {
         return new TopicSummary(id, title, messages.size(), messages.isEmpty() ? null : messages.get(messages.size() - 1).getDate());
     }
