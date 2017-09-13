@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Forum API Docs</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="css/prism.css">
+    <script src="js/prism.js"></script>
+</head>
+<body>
+
+<div class="jumbotron text-center">
+    <h1>Forum API Docs</h1>
+    <p>mmm tasty docs</p>
+</div>
+
+<div class="container">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="row">
+            <button data-toggle="collapse" data-target="#postUsers" class="btn btn-link"><strong>POST /forum/users</strong></button>
+
+            <div id="postUsers" class="collapse">
+                <div class="row">
+                <div class="col-sm-1"></div>
+                <div class="col-md-6">
+                <h5>Required variables</h5>
+                <table class="table table-bordered">
+                    <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Data type</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>username</td>
+                        <td>String</td>
+                    </tr>
+                    <tr>
+                        <td>password</td>
+                        <td>String</td>
+                    </tr>
+                    <tr>
+                        <td>displayName</td>
+                        <td>String</td>
+                    </tr>
+                    </tbody>
+                </table>
+                </div></div>
+
+                <div class="row">
+                    <div class="col-sm-1"></div>
+                    <div class="col-lg-4">
+                <h5>JSON Example</h5>
+                        <pre><code class="language-json"><script type="prism-html-markup">{
+    "username": "matt",
+    "password": "temp123",
+    "displayName": "Mr.Test"
+}</script></code></pre>
+                    </div>
+                    <div class="col-lg-4">
+                        <h5>JSON Response</h5>
+                        <pre><code class="language-json"><script type="prism-html-markup">{
+    "username": "matt",
+    "displayName": "Mr.Test"
+}</script></code></pre>
+                    </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-sm-1"></div>
+                        <div class="col-lg-4">
+                <h5>XML Example</h5>
+                <pre><code class="language-html"><script type="prism-html-markup"><UserRequest>
+    <username>matt</username>
+    <password>temp123</password>
+    <displayName>Mr.Test</displayName>
+</UserRequest></script></code></pre>
+                </div>
+                        <div class="col-lg-4">
+                            <h5>XML Response</h5>
+                            <pre><code class="language-html"><script type="prism-html-markup"><UserRequest>
+    <username>matt</username>
+    <displayName>Mr.Test</displayName>
+</UserRequest></script></code></pre>
+                        </div>
+                        </div>
+            </div>
+            </div>
+
+            <div class="row">
+                <button data-toggle="collapse" data-target="#demo" class="btn btn-link"><strong>GET /forum/topics</strong></button>
+
+                <div id="demo" class="collapse">
+                    <div class="row">
+                        <div class="col-sm-1"></div>
+                        <div class="col-lg-6">
+                            <h5>JSON Response</h5>
+                            <pre><code class="language-json"><script type="prism-html-markup">[
+    {
+        "id": 0,
+        "title": "Can you automate testing?",
+        "messageCount": 5
+    },
+    {
+        "id": 1,
+        "title": "How do I test this?",
+        "messageCount": 1
+    }
+    {
+        "id": 2,
+        "title": "Introduce yourself",
+        "messageCount": 65
+    }
+]</script></code></pre>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-sm-1"></div>
+                        <div class="col-lg-6">
+                            <h5>XML Response</h5>
+                            <pre><code class="language-html"><script type="prism-html-markup"><List>
+    <item>
+        <id>0</id>
+        <title>Can you automate testing?</title>
+        <messageCount>5</messageCount>
+    </item>
+    <item>
+        <id>1</id>
+        <title>How do I test this?</title>
+        <messageCount>1</messageCount>
+    </item>
+    <item>
+        <id>2</id>
+        <title>Introduce yourself</title>
+        <messageCount>65</messageCount>
+    </item>
+</List></script></code></pre>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <button data-toggle="collapse" data-target="#postTopics" class="btn btn-link"><strong>POST /forum/topics</strong></button>
+
+                <div id="postTopics" class="collapse">
+                    <div class="row">
+                        <div class="col-sm-1"></div>
+                        <div class="col-md-6">
+                            <h5>Required variables</h5>
+                            <table class="table table-bordered">
+                                <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Data type</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <td>title</td>
+                                    <td>String</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div></div>
+
+                    <div class="row">
+                        <div class="col-sm-1"></div>
+                        <div class="col-lg-4">
+                            <h5>JSON Example</h5>
+                            <pre><code class="language-json"><script type="prism-html-markup">{
+	"title": "Can you automate testing?"
+}</script></code></pre>
+                        </div>
+                        <div class="col-lg-4">
+                            <h5>JSON Response</h5>
+                            <pre><code class="language-json"><script type="prism-html-markup">{
+    "id": 0,
+    "title": "Can you automate testing?",
+    "messageCount": 0
+}</script></code></pre>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-sm-1"></div>
+                        <div class="col-lg-4">
+                            <h5>XML Example</h5>
+                            <pre><code class="language-html"><script type="prism-html-markup"><TopicSummary>
+    <title>Can you automate testing?</title>
+</TopicSummary></script></code></pre>
+                        </div>
+                        <div class="col-lg-4">
+                            <h5>XML Response</h5>
+                            <pre><code class="language-html"><script type="prism-html-markup"><TopicSummary>
+    <id>0</id>
+    <title>Can you automate testing?</title>
+    <messageCount>0</messageCount>
+</TopicSummary></script></code></pre>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="row">
+                <button data-toggle="collapse" data-target="#getMessages" class="btn btn-link"><strong>GET /forum/topics/{topicId}/messages</strong></button>
+
+                <div id="getMessages" class="collapse">
+
+                    <div class="row">
+                        <div class="col-sm-1"></div>
+                        <div class="col-lg-6">
+                            <h5>JSON Response</h5>
+                            <pre><code class="language-json"><script type="prism-html-markup">[
+    {
+        "id": 0,
+        "user": "Matt",
+        "postDate": "2017-11-13T08:59:22.465Z",
+        "editDate": "2017-11-13T08:59:22.465Z",
+        "message": "Depends what you mean by 'automation' and 'testing'..."
+    },
+    {
+        "id": 1,
+        "user": "Roy",
+        "postDate": "2017-11-13T10:22:01.322Z",
+        "editDate": "2017-11-13T10:22:01.322Z",
+        "message": "No way!"
+    }
+]</script></code></pre>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-sm-1"></div>
+                        <div class="col-lg-6">
+                            <h5>XML Response</h5>
+                            <pre><code class="language-html"><script type="prism-html-markup"><List>
+    <item>
+        <id>0</id>
+        <user>Matt</user>
+        <postDate>2017-11-13T08:59:22.465Z</postDate>
+        <editDate>2017-11-13T08:59:22.465Z</editDate>
+        <message>Depends what you mean by 'automation' and 'testing'...</message>
+    </item>
+    <item>
+        <id>1</id>
+        <user>Roy</user>
+        <postDate>2017-11-13T10:22:01.322Z</postDate>
+        <editDate>2017-11-13T10:22:01.322Z</editDate>
+        <message>No way!</message>
+    </item>
+</List></script></code></pre>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="row">
+                <button data-toggle="collapse" data-target="#postMessages" class="btn btn-link"><strong>POST /forum/topics/{topicId}/messages</strong></button>
+
+                <div id="postMessages" class="collapse">
+                    <div class="row">
+                        <div class="col-sm-1"></div>
+                        <div class="col-md-6">
+                            <h5>Required variables</h5>
+                            <table class="table table-bordered">
+                                <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Data type</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <td>message</td>
+                                    <td>String</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div></div>
+
+                    <div class="row">
+                        <div class="col-sm-1"></div>
+                        <div class="col-lg-4">
+                            <h5>JSON Example</h5>
+                            <pre><code class="language-json"><script type="prism-html-markup">{
+	"message": "Depends what you mean by 'automation' and 'testing'..."
+}</script></code></pre>
+                        </div>
+                        <div class="col-lg-4">
+                            <h5>JSON Response</h5>
+                            <pre><code class="language-json"><script type="prism-html-markup">{
+    "id": 0,
+    "user": "Matt",
+    "postDate": "2017-11-13T09:05:33.957Z",
+    "editDate": "2017-11-13T09:05:33.957Z",
+    "message": "Depends what you mean by 'automation' and 'testing'..."
+}</script></code></pre>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-sm-1"></div>
+                        <div class="col-lg-4">
+                            <h5>XML Example</h5>
+                            <pre><code class="language-html"><script type="prism-html-markup"><MessageSummary>
+    <message>Depends what you mean by 'automation' and 'testing'...</message>
+</MessageSummary></script></code></pre>
+                        </div>
+                        <div class="col-lg-4">
+                            <h5>XML Response</h5>
+                            <pre><code class="language-html"><script type="prism-html-markup"><MessageSummary>
+    <id>0</id>
+    <user>Matt</user>
+    <postDate>2017-11-13T09:04:59.578Z</postDate>
+    <editDate>2017-11-13T09:04:59.578Z</editDate>
+    <message>Depends what you mean by 'automation' and 'testing'...</message>
+</MessageSummary></script></code></pre>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="row">
+                <button data-toggle="collapse" data-target="#putMessages" class="btn btn-link"><strong>PUT /forum/topics/{topicId}/messages/{messageId}</strong></button>
+
+                <div id="putMessages" class="collapse">
+                    <div class="row">
+                        <div class="col-sm-1"></div>
+                        <div class="col-md-6">
+                            <h5>Required variables</h5>
+                            <table class="table table-bordered">
+                                <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Data type</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <td>message</td>
+                                    <td>String</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div></div>
+
+                    <div class="row">
+                        <div class="col-sm-1"></div>
+                        <div class="col-lg-4">
+                            <h5>JSON Example</h5>
+                            <pre><code class="language-json"><script type="prism-html-markup">{
+	"message": "Depends what you mean by 'automation' and 'testing'..."
+}</script></code></pre>
+                        </div>
+                        <div class="col-lg-4">
+                            <h5>JSON Response</h5>
+                            <pre><code class="language-json"><script type="prism-html-markup">{
+    "id": 0,
+    "user": "Matt",
+    "postDate": "2017-11-13T09:05:33.957Z",
+    "editDate": "2017-11-13T09:11:35.637Z",
+    "message": "Depends what you mean by 'automation' and 'testing'..."
+}</script></code></pre>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-sm-1"></div>
+                        <div class="col-lg-4">
+                            <h5>XML Example</h5>
+                            <pre><code class="language-html"><script type="prism-html-markup"><MessageSummary>
+    <message>Depends what you mean by 'automation' and 'testing'...</message>
+</MessageSummary></script></code></pre>
+                        </div>
+                        <div class="col-lg-4">
+                            <h5>XML Response</h5>
+                            <pre><code class="language-html"><script type="prism-html-markup"><MessageSummary>
+    <id>0</id>
+    <user>Matt</user>
+    <postDate>2017-11-13T09:04:59.578Z</postDate>
+    <editDate>2017-11-13T09:11:43.321Z</editDate>
+    <message>Depends what you mean by 'automation' and 'testing'...</message>
+</MessageSummary></script></code></pre>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="row">
+                <button data-toggle="collapse" data-target="#deleteMessages" class="btn btn-link"><strong>DELETE /forum/topics/{topicId}/messages/{messageId}</strong></button>
+
+                <div id="deleteMessages" class="collapse">
+                    <div class="row">
+                        <div class="col-sm-1"></div>
+                        <div class="col-lg-4">
+                            <h5>JSON Response</h5>
+                            <pre><code class="language-json"><script type="prism-html-markup">{
+    "id": 0,
+    "user": "Matt",
+    "postDate": "2017-11-13T09:05:33.957Z",
+    "editDate": "2017-11-13T09:11:35.637Z",
+    "message": "Depends what you mean by 'automation' and 'testing'..."
+}</script></code></pre>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-sm-1"></div>
+                        <div class="col-lg-4">
+                            <h5>XML Response</h5>
+                            <pre><code class="language-html"><script type="prism-html-markup"><MessageSummary>
+    <id>0</id>
+    <user>Matt</user>
+    <postDate>2017-11-13T09:04:59.578Z</postDate>
+    <editDate>2017-11-13T09:11:43.321Z</editDate>
+    <message>Depends what you mean by 'automation' and 'testing'...</message>
+</MessageSummary></script></code></pre>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
