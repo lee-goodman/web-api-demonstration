@@ -20,6 +20,11 @@ public class Topic extends DataStoreEntry {
         this.title = request.getTitle();
     }
 
+    public Topic(TopicRequest request, Topic existing) {
+        this.title = request.getTitle();
+        this.messages = existing.messages;
+    }
+
     public List<MessageSummary> getMessages() {
         return messages.valueStream().map(Message::makeSummary).collect(toList());
     }

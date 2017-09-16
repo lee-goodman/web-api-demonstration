@@ -26,7 +26,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
             .authorizeRequests()
-                .mvcMatchers(HttpMethod.POST, "/forum/users").permitAll()
+                .mvcMatchers("/forum/users").permitAll()
                 .antMatchers("/forum/**").authenticated()
                 .anyRequest().permitAll()
                 .and()
@@ -45,6 +45,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             @Override
             public void createUser(UserDetails user) {
                 super.createUser(user);
+                this.secondaryStore.put(user.getUsername().toLowerCase(), (ForumUser) user);
+            }
+
+            @Override
+            public void updateUser(UserDetails user) {
+                super.updateUser(user);
                 this.secondaryStore.put(user.getUsername().toLowerCase(), (ForumUser) user);
             }
 

@@ -29,4 +29,8 @@ public class ForumUser extends User {
     public ForumUser clone() {
         return new ForumUser(this.getUsername(), this.getPassword(), this.displayName);
     }
+
+    public UserSummary makeSummary() {
+        return new UserSummary(getUsername(), displayName);
+    }
 }

@@ -25,6 +25,20 @@ public class SubForum extends DataStoreEntry {
         return newTopic.makeSummary();
     }
 
+    public TopicSummary editTopic(Integer id, TopicRequest request) {
+        Topic existing = topics.get(id);
+        if(existing == null) {
+            throw new IllegalArgumentException("Topic with ID of " + id + " doesn't exist");
+        }
+        Topic updatedTopic = request.toTopic(existing);
+        topics.update(id, updatedTopic);
+        return updatedTopic.makeSummary();
+    }
+
+    public void removeTopic(Integer id) {
+        topics.remove(id);
+    }
+
     public List<TopicSummary> getTopics() {
         return topics.valueStream().map(Topic::makeSummary).collect(Collectors.toList());
     }

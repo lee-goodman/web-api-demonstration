@@ -21,4 +21,8 @@ public class TopicRequest {
     public Topic toTopic() {
         return new Topic(this);
     }
+
+    public Topic toTopic(Topic existing) {
+        return new Topic(this, existing);
+    }
 }

@@ -9,6 +9,7 @@ import lg.webapidemo.forum.topics.TopicRequest;
 import lg.webapidemo.forum.topics.TopicSummary;
 import lg.webapidemo.forum.users.ForumUser;
 import lg.webapidemo.forum.users.UserRequest;
+import lg.webapidemo.forum.users.UserSummary;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +20,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+import java.util.*;
 
 @RequestMapping("/forum")
 @RestController
@@ -28,17 +29,8 @@ public class ForumController {
     private static final Logger LOG = LoggerFactory.getLogger(ForumController.class);
 
     @Autowired
-    private InMemoryUserDetailsManager userDetailsManager;
-
-    @Autowired
     private Forum forum;
 
-    @PostMapping("/users")
-    public UserRequest addUser(@RequestBody UserRequest user) {
-        LOG.info("Creating user: {}", user);
-        userDetailsManager.createUser(new ForumUser(user));
-        return user;
-    }
 
     @GetMapping("/subForums")
     public List<SubForumSummary> getSubForum() {
@@ -58,6 +50,16 @@ public class ForumController {
     @PostMapping("/subForums/{forumId}/topics")
     public TopicSummary createTopic(@PathVariable Integer forumId, @RequestBody TopicRequest topic) {
         return forum.get(forumId).createTopic(topic);
+    }
+
+    @PutMapping("/subForums/{forumId}/topics/{topicId}")
+    public TopicSummary editTopic(@PathVariable Integer forumId, @PathVariable Integer topicId, @RequestBody TopicRequest topic) {
+        return forum.get(forumId).editTopic(topicId, topic);
+    }
+
+    @DeleteMapping("/subForums/{forumId}/topics/{topicId}")
+    public void deleteTopic(@PathVariable Integer forumId, @PathVariable Integer topicId) {
+        forum.get(forumId).removeTopic(topicId);
     }
 
     @GetMapping("/subForums/{forumId}/topics/{topicId}/messages")

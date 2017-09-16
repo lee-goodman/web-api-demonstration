@@ -22,7 +22,18 @@ public class DataStore<T extends DataStoreEntry> {
         backingMap.put(id, entry);
     }
 
+    public synchronized void update(Integer id, T entry) {
+        if(!backingMap.containsKey(id)) {
+            throw new IllegalArgumentException("No entry exists with key " + id);
+        }
+        entry.setId(id);
+        backingMap.put(id, entry);
+    }
+
     public synchronized void remove(Integer id) {
+        if(!backingMap.containsKey(id)) {
+            throw new IllegalArgumentException("No entry exists with key " + id);
+        }
         backingMap.put(id, null);
     }
 
