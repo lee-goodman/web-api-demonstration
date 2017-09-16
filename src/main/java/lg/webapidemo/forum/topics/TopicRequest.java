@@ -18,7 +18,7 @@ public class TopicRequest {
         return title;
     }
 
-    public Topic toTopic(Integer id) {
-        return new Topic(id, this);
+    public Topic toTopic() {
+        return new Topic(this);
     }
 }

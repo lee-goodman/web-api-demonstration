@@ -1,39 +1,32 @@
 package lg.webapidemo.forum.topics;
 
-import com.google.common.base.Predicates;
+import lg.webapidemo.forum.store.DataStore;
+import lg.webapidemo.forum.store.DataStoreEntry;
 import lg.webapidemo.forum.messages.Message;
 import lg.webapidemo.forum.messages.MessageRequest;
 import lg.webapidemo.forum.messages.MessageSummary;
 import lg.webapidemo.forum.users.ForumUser;
 
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
-import static com.google.common.base.Predicates.isNull;
-import static com.google.common.base.Predicates.not;
 import static java.util.stream.Collectors.toList;
 
-public class Topic {
+public class Topic extends DataStoreEntry {
 
-    private Integer id;
     private String title;
-    private Map<Integer, Message> messages = new LinkedHashMap<>();
+    private DataStore<Message> messages = new DataStore<>();
 
-    public Topic(Integer id, TopicRequest request) {
-        this.id = id;
+    public Topic(TopicRequest request) {
         this.title = request.getTitle();
     }
 
     public List<MessageSummary> getMessages() {
-        return messages.values().stream().filter(not(isNull())).map(Message::makeSummary).collect(toList());
+        return messages.valueStream().map(Message::makeSummary).collect(toList());
     }
 
-    public synchronized MessageSummary addMessage(ForumUser user, MessageRequest request) {
-        Message message = new Message(messages.size(), user, request);
-        messages.put(messages.size(), message);
+    public MessageSummary addMessage(ForumUser user, MessageRequest request) {
+        Message message = new Message(user, request);
+        messages.add(message);
         return message.makeSummary();
     }
 
@@ -58,6 +51,7 @@ public class Topic {
     }
 
     public TopicSummary makeSummary() {
-        return new TopicSummary(id, title, messages.size(), messages.isEmpty() ? null : messages.get(messages.size() - 1).getDate());
+        Message lastMessage = messages.getLast();
+        return new TopicSummary(getId(), title, messages.size(), lastMessage==null ? null : lastMessage.getDate());
     }
 }

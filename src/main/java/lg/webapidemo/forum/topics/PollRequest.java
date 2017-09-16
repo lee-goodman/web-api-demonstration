@@ -17,7 +17,7 @@ public class PollRequest extends TopicRequest {
     }
 
     @Override
-    public Topic toTopic(Integer id) {
-        return new Poll(id, this);
+    public Topic toTopic() {
+        return new Poll(this);
     }
 }

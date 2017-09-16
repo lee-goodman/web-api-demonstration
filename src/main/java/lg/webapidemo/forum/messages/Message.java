@@ -1,19 +1,18 @@
 package lg.webapidemo.forum.messages;
 
+import lg.webapidemo.forum.store.DataStoreEntry;
 import lg.webapidemo.forum.users.ForumUser;
 
 import java.time.Instant;
 
-public class Message {
+public class Message extends DataStoreEntry {
 
-    private Integer id;
     private ForumUser user;
     private Instant date;
     private Instant lastEdit;
     private String message;
 
-    public Message(Integer id, ForumUser user, MessageRequest request) {
-        this.id = id;
+    public Message(ForumUser user, MessageRequest request) {
         this.user = user;
         this.date = Instant.now();
         this.lastEdit = Instant.now();
@@ -25,7 +24,7 @@ public class Message {
     }
 
     public MessageSummary makeSummary() {
-        return new MessageSummary(id, user.getDisplayName(), date, lastEdit, message);
+        return new MessageSummary(getId(), user.getDisplayName(), date, lastEdit, message);
     }
 
     public Boolean isOwnedBy(ForumUser user) {

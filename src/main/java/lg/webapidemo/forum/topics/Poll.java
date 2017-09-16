@@ -12,8 +12,8 @@ public class Poll extends Topic {
     private Map<Integer, PollEntry> poll;
     private Instant expires;
 
-    public Poll(Integer id, PollRequest request) {
-        super(id, request);
+    public Poll(PollRequest request) {
+        super(request);
         this.poll = IntStream.range(0, request.getPollOptions().size())
                 .boxed()
                 .collect(toMap(Function.identity(), i -> new PollEntry(request.getPollOptions().get(i))));
