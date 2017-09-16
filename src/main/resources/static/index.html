@@ -94,7 +94,80 @@
             </div>
 
             <div class="row">
-                <button data-toggle="collapse" data-target="#demo" class="btn btn-link"><strong>GET /forum/topics</strong></button>
+                <button data-toggle="collapse" data-target="#getSubForums" class="btn btn-link"><strong>GET /forum/subForums</strong></button>
+
+                <div id="getSubForums" class="collapse">
+                    <div class="row">
+                        <div class="col-sm-1"></div>
+                        <div class="col-lg-4">
+                            <h5>JSON Response</h5>
+                            <pre><code class="language-json"><script type="prism-html-markup">[
+    {
+        "id": 0,
+        "owner": "Matt",
+        "topicCount": 7
+    },
+    {
+        "id": 1,
+        "owner": "Dave",
+        "topicCount": 3
+    }
+]</script></code></pre>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-sm-1"></div>
+                        <div class="col-lg-4">
+                            <h5>XML Response</h5>
+                            <pre><code class="language-html"><script type="prism-html-markup"><List>
+    <item>
+        <id>0</id>
+        <owner>Matt</owner>
+        <topicCount>7</topicCount>
+    </item>
+    <item>
+        <id>1</id>
+        <owner>Dave</owner>
+        <topicCount>3</topicCount>
+    </item>
+</List></script></code></pre>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <button data-toggle="collapse" data-target="#postSubForums" class="btn btn-link"><strong>POST /forum/subForums</strong></button>
+
+                <div id="postSubForums" class="collapse">
+                    <div class="row">
+                        <div class="col-sm-1"></div>
+                        <div class="col-lg-4">
+                            <h5>JSON Response</h5>
+                            <pre><code class="language-json"><script type="prism-html-markup">{
+    "id": 0,
+    "owner": "Matt",
+    "topicCount": 0
+}</script></code></pre>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-1"></div>
+                        <div class="col-lg-4">
+                            <h5>XML Response</h5>
+                            <pre><code class="language-html"><script type="prism-html-markup"><SubForumSummary>
+    <id>0</id>
+    <owner>Matt</owner>
+    <topicCount>0</topicCount>
+</SubForumSummary></script></code></pre>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <button data-toggle="collapse" data-target="#demo" class="btn btn-link"><strong>GET /forum/subForums/{subForumId}/topics</strong></button>
 
                 <div id="demo" class="collapse">
                     <div class="row">
@@ -148,7 +221,7 @@
             </div>
 
             <div class="row">
-                <button data-toggle="collapse" data-target="#postTopics" class="btn btn-link"><strong>POST /forum/topics</strong></button>
+                <button data-toggle="collapse" data-target="#postTopics" class="btn btn-link"><strong>POST /forum/subForums/{subForumId}/topics</strong></button>
 
                 <div id="postTopics" class="collapse">
                     <div class="row">
@@ -292,7 +365,7 @@ YYYY-MM-DDTHH:mm:ssZ</td>
 
 
             <div class="row">
-                <button data-toggle="collapse" data-target="#getMessages" class="btn btn-link"><strong>GET /forum/topics/{topicId}/messages</strong></button>
+                <button data-toggle="collapse" data-target="#getMessages" class="btn btn-link"><strong>GET /forum/subForums/{subForumId}/topics/{topicId}/messages</strong></button>
 
                 <div id="getMessages" class="collapse">
 
@@ -346,7 +419,7 @@ YYYY-MM-DDTHH:mm:ssZ</td>
 
 
             <div class="row">
-                <button data-toggle="collapse" data-target="#postMessages" class="btn btn-link"><strong>POST /forum/topics/{topicId}/messages</strong></button>
+                <button data-toggle="collapse" data-target="#postMessages" class="btn btn-link"><strong>POST /forum/subForums/{subForumId}/topics/{topicId}/messages</strong></button>
 
                 <div id="postMessages" class="collapse">
                     <div class="row">
@@ -413,7 +486,7 @@ YYYY-MM-DDTHH:mm:ssZ</td>
 
 
             <div class="row">
-                <button data-toggle="collapse" data-target="#putMessages" class="btn btn-link"><strong>PUT /forum/topics/{topicId}/messages/{messageId}</strong></button>
+                <button data-toggle="collapse" data-target="#putMessages" class="btn btn-link"><strong>PUT /forum/subForums/{subForumId}/topics/{topicId}/messages/{messageId}</strong></button>
 
                 <div id="putMessages" class="collapse">
                     <div class="row">
@@ -480,7 +553,7 @@ YYYY-MM-DDTHH:mm:ssZ</td>
 
 
             <div class="row">
-                <button data-toggle="collapse" data-target="#deleteMessages" class="btn btn-link"><strong>DELETE /forum/topics/{topicId}/messages/{messageId}</strong></button>
+                <button data-toggle="collapse" data-target="#deleteMessages" class="btn btn-link"><strong>DELETE /forum/subForums/{subForumId}/topics/{topicId}/messages/{messageId}</strong></button>
 
                 <div id="deleteMessages" class="collapse">
                     <div class="row">
@@ -514,7 +587,7 @@ YYYY-MM-DDTHH:mm:ssZ</td>
             </div>
 
             <div class="row">
-                <button data-toggle="collapse" data-target="#putVote" class="btn btn-link"><strong>PUT /forum/topics/{topicId}/votes/{pollOptionId}</strong></button>
+                <button data-toggle="collapse" data-target="#putVote" class="btn btn-link"><strong>PUT /forum/subForums/{subForumId}/topics/{topicId}/votes/{pollOptionId}</strong></button>
 
                 <div id="putVote" class="collapse">
                     <div class="row">
