@@ -9,6 +9,7 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <link rel="stylesheet" href="css/prism.css">
     <script src="js/prism.js"></script>
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
 </head>
 <body>
 
@@ -152,19 +153,37 @@
                 <div id="postTopics" class="collapse">
                     <div class="row">
                         <div class="col-sm-1"></div>
-                        <div class="col-md-6">
+                        <div class="col-md-8">
                             <h5>Required variables</h5>
                             <table class="table table-bordered">
                                 <thead>
                                 <tr>
                                     <th>Name</th>
                                     <th>Data type</th>
+                                    <th>Required field?</th>
                                 </tr>
                                 </thead>
                                 <tbody>
                                 <tr>
                                     <td>title</td>
                                     <td>String</td>
+                                    <td>Yes</td>
+                                </tr>
+                                <tr>
+                                    <td>type</td>
+                                    <td>String - accepted values: "poll"</td>
+                                    <td>No</td>
+                                </tr>
+                                <tr>
+                                    <td>pollOptions</td>
+                                    <td>List of Strings</td>
+                                    <td>Only if type = "poll"</td>
+                                </tr>
+                                <tr>
+                                    <td>pollExpiresAt</td>
+                                    <td>String - must be in the datetime format
+YYYY-MM-DDTHH:mm:ssZ</td>
+                                    <td>Only if type = "poll"</td>
                                 </tr>
                                 </tbody>
                             </table>
@@ -191,6 +210,36 @@
                     <div class="row">
                         <div class="col-sm-1"></div>
                         <div class="col-lg-4">
+                            <pre><code class="language-json"><script type="prism-html-markup">{
+	"title": "Can you automate testing?",
+    "type": "poll",
+	"pollOptions": ["yes","no"],
+	"pollExpiresAt": "2017-12-11T21:17:00Z"
+}</script></code></pre>
+                        </div>
+                        <div class="col-lg-4">
+                            <pre><code class="language-json"><script type="prism-html-markup">{
+    "id": 0,
+    "title": "Can you automate testing?",
+    "messageCount": 0,
+    "poll": {
+        "0": {
+            "option": "yes",
+            "votes": 0
+        },
+        "1": {
+            "option": "no",
+            "votes": 0
+        }
+    },
+    "pollExpiresAt": "2017-12-11T21:17:00Z"
+}</script></code></pre>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-sm-1"></div>
+                        <div class="col-lg-4">
                             <h5>XML Example</h5>
                             <pre><code class="language-html"><script type="prism-html-markup"><TopicSummary>
     <title>Can you automate testing?</title>
@@ -205,6 +254,39 @@
 </TopicSummary></script></code></pre>
                         </div>
                     </div>
+                    <div class="row">
+                        <div class="col-sm-1"></div>
+                        <div class="col-lg-4">
+                            <pre><code class="language-html"><script type="prism-html-markup"><PollSummary>
+    <title>Can you automate testing?</title>
+    <type>poll</type>
+    <pollOptions>
+            <pollOption>yes</pollOption>
+            <pollOption>no</pollOption>
+    </pollOptions>
+    <pollExpiresAt>2017-12-11T21:17:00Z</pollExpiresAt>
+</PollSummary></script></code></pre>
+                        </div>
+                        <div class="col-lg-4">
+                            <pre><code class="language-html"><script type="prism-html-markup"><PollSummary>
+    <id>1</id>
+    <title>Can you automate testing?</title>
+    <messageCount>0</messageCount>
+    <poll>
+        <0>
+            <option>yes</option>
+            <votes>0</votes>
+        </0>
+        <1>
+            <option>no</option>
+            <votes>0</votes>
+        </1>
+    </poll>
+    <pollExpiresAt>2017-12-11T21:17:00Z</pollExpiresAt>
+</PollSummary></script></code></pre>
+                        </div>
+                    </div>
+
                 </div>
             </div>
 
@@ -426,6 +508,58 @@
     <editDate>2017-11-13T09:11:43.321Z</editDate>
     <message>Depends what you mean by 'automation' and 'testing'...</message>
 </MessageSummary></script></code></pre>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <button data-toggle="collapse" data-target="#putVote" class="btn btn-link"><strong>PUT /forum/topics/{topicId}/votes/{pollOptionId}</strong></button>
+
+                <div id="putVote" class="collapse">
+                    <div class="row">
+                        <div class="col-sm-1"></div>
+                        <div class="col-lg-4">
+                            <h5>JSON Response</h5>
+                            <pre><code class="language-json"><script type="prism-html-markup">{
+    "id": 1,
+    "title": "Can you automate testing?",
+    "messageCount": 0,
+    "poll": {
+        "0": {
+            "option": "yes",
+            "votes": 1
+        },
+        "1": {
+            "option": "no",
+            "votes": 0
+        }
+    },
+    "pollExpiresAt": "2017-12-11T21:17:00Z"
+}</script></code></pre>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-sm-1"></div>
+                        <div class="col-lg-4">
+                            <h5>XML Response</h5>
+                            <pre><code class="language-html"><script type="prism-html-markup"><PollSummary>
+    <id>1</id>
+    <title>Can you automate testing?</title>
+    <messageCount>0</messageCount>
+    <poll>
+        <0>
+            <option>yes</option>
+            <votes>2</votes>
+        </0>
+        <1>
+            <option>no</option>
+            <votes>0</votes>
+        </1>
+    </poll>
+    <pollExpiresAt>2017-12-11T21:17:00Z</pollExpiresAt>
+</PollSummary></script></code></pre>
                         </div>
                     </div>
                 </div>
