@@ -25,6 +25,9 @@ public class Poll extends Topic {
         if(expires.isBefore(Instant.now())) {
             throw new PollExpiredException("This poll has expired, you can no longer vote in this poll");
         }
+        if(!poll.containsKey(pollId)) {
+            poll.put(pollId, new PollEntry("MISSINGNO"));
+        }
         poll.get(pollId).vote();
         return (PollSummary) makeSummary();
     }
