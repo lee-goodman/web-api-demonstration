@@ -7,13 +7,13 @@ import java.time.Instant;
 
 public class Message extends DataStoreEntry {
 
-    private ForumUser user;
+    private String user;
     private Instant date;
     private Instant lastEdit;
     private String message;
 
     public Message(ForumUser user, MessageRequest request) {
-        this.user = user;
+        this.user = user.getDisplayName();
         this.date = Instant.now();
         this.lastEdit = Instant.now();
         this.message = request.getMessage();
@@ -24,7 +24,7 @@ public class Message extends DataStoreEntry {
     }
 
     public MessageSummary makeSummary() {
-        return new MessageSummary(getId(), user.getDisplayName(), date, lastEdit, message);
+        return new MessageSummary(getId(), user, date, lastEdit, message);
     }
 
     public Boolean isOwnedBy(ForumUser user) {

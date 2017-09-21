@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Random;
 
 @RequestMapping("/forum/users")
 @RestController
@@ -24,8 +25,13 @@ public class UserController {
     private InMemoryUserDetailsManager userDetailsManager;
     private List<String> usernames = Collections.synchronizedList(new ArrayList<>());
 
+    private Random random = new Random();
+
     @PostMapping
     public UserSummary addUser(@RequestBody UserRequest user) {
+        if(random.nextBoolean()) {
+            throw new IntermittentException("This only happens sometimes, try again and it should work...");
+        }
         LOG.info("Creating user: {}", user);
         ForumUser newUser = new ForumUser(user);
         userDetailsManager.createUser(newUser);
@@ -61,5 +67,11 @@ public class UserController {
     public void deleteUser(@PathVariable String username) {
         LOG.info("Deleting user: {}", username);
         userDetailsManager.deleteUser(username);
+    }
+
+    private static class IntermittentException extends RuntimeException {
+        public IntermittentException(String message) {
+            super(message);
+        }
     }
 }

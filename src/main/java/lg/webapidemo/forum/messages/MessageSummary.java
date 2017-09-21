@@ -3,20 +3,21 @@ package lg.webapidemo.forum.messages;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import java.time.Instant;
+import java.time.temporal.ChronoField;
 
 public class MessageSummary {
 
     private Integer id;
     private String user;
     private Instant postDate;
-    private Instant editDate;
+    private Long editDate;
     private String message;
 
     public MessageSummary(Integer id, String user, Instant postDate, Instant editDate, String message) {
         this.id = id;
         this.user = user;
         this.postDate = postDate;
-        this.editDate = editDate;
+        this.editDate = editDate.getEpochSecond();
         this.message = message;
     }
 
@@ -32,7 +33,7 @@ public class MessageSummary {
         return postDate;
     }
 
-    public Instant getEditDate() {
+    public Long getEditDate() {
         return editDate;
     }
 

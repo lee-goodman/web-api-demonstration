@@ -13,6 +13,7 @@ import lg.webapidemo.forum.users.UserSummary;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -33,13 +34,21 @@ public class ForumController {
 
 
     @GetMapping("/subForums")
-    public List<SubForumSummary> getSubForum() {
+    public List<SubForumSummary> getSubForums() {
         return forum.list();
     }
 
     @PostMapping("/subForums")
     public SubForumSummary createSubForum(@AuthenticationPrincipal ForumUser user) {
         return forum.create(user);
+    }
+
+    /**
+     * Deliberate bug: Undocumented endpoint
+     */
+    @GetMapping("/subForum/{forumId}")
+    public SubForumSummary getSubForum() {
+        throw new NullPointerException();
     }
 
     @GetMapping("/subForums/{forumId}/topics")
