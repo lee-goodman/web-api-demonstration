@@ -29,9 +29,9 @@ public class Game {
 
     public Game(String gameId, Integer level) throws URISyntaxException, IOException {
         this.map = new Map(level);
-        this.player = new Player(this.map.playerStartingPosition(), level.equals(2));
+        this.player = new Player(this.map.playerStartingPosition(), false);
 
-        this.gameIsBroken = level.equals(3);
+        this.gameIsBroken = false;
         this.doors = this.map.createDoorInstances();
         LOG.info("Game '{}' started, level {}, player is at {}", gameId, level, this.player.getPosition());
     }
