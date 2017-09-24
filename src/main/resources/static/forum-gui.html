@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Forum</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+    <script>
+$(document).ready(function(){
+    $.ajaxSetup({
+      headers : {
+        'Authorization' : 'Basic YWRtaW46YWRtaW4xMjM=',
+      }
+    });
+    $(document).ready(function(){
+        $.getJSON("http://localhost:8080/forum/subForums", function(object){
+              var items = [];
+              $.each( object, function( key, value) {
+                 items.push( "<button type='button' class='btn btn-primary btn-lg' id='" + value.id + "' onClick='get_topics(this.id)'>" + value.owner+'-'+value.id+' Topics: '+value.topicCount + "</button>" );
+              });
+
+              $( "<div/>", {
+                "id": "subForumList",
+                "class": "btn-group-vertical center-block",
+                html: items.join( "" )
+              }).appendTo( "body" );
+        });
+    });
+});
+</script>
+</head>
+<body>
+
+<div class="jumbotron text-center">
+    <h1>Forum</h1>
+</div>
+
+<script type="text/javascript">
+var forum_id = 0;
+var topic_id = 0;
+
+function back_to_forums()
+{
+    $("#topicList").remove();
+    $("#backToForums").remove();
+    $("#createTopic").remove();
+    $.getJSON("http://localhost:8080/forum/subForums", function(object){
+          var items = [];
+          $.each( object, function( key, value) {
+             items.push( "<button type='button' class='btn btn-primary btn-lg' id='" + value.id + "' onClick='get_topics(this.id)'>" + value.owner+'-'+value.id+' Topics: '+value.topicCount + "</button>" );
+          });
+
+          $( "<div/>", {
+            "id": "subForumList",
+            "class": "btn-group-vertical center-block",
+            html: items.join( "" )
+          }).appendTo( "body" );
+    });
+}
+
+function get_topics(clicked_id)
+{
+    $("#subForumList").remove();
+    forum_id = clicked_id;
+    $.getJSON("http://localhost:8080/forum/subForums/"+clicked_id+"/topics", function(object){
+      var items = [];
+      $.each( object, function( key, value) {
+         items.push( "<button type='button' class='btn btn-primary btn-lg' id='" + value.id + "' onClick='get_messages(this.id)'>" + value.title+' Messages: '+value.messageCount + "</button>" );
+      });
+
+      $( "<div/>", {
+        "id": "topicList",
+        "class": "btn-group-vertical center-block",
+        html: items.join( "" )
+      }).appendTo( "body" );
+
+      $( "</p><button id='backToForums' class='btn btn-secondary btn-lg' onClick='back_to_forums()'>Back to forums list</button>").appendTo( "body" );
+
+      $( "<button type='submit' id='createTopic' class='btn btn-success btn-lg pull-right ' onClick='create_topic_display()' align='right'>Create</button>").appendTo( "body" );
+});
+}
+
+function create_topic_display()
+{
+    $("#topicList").remove();
+    $("#backToForums").remove();
+    $("#createTopic").remove();
+    $( "<div id='createTopicDisplay' class='row'><div class='col-sm-6 col-sm-offset-3'><h3>Create a topic</h3><form id='topicForm'><div class='row'><div class='form-group'><label for='message' class='h4'>Topic description</label><textarea id='topicName' class='form-control' rows='5' placeholder='Enter your topic name' required></textarea></div><button id='backToTopics' class='btn btn-secondary btn-lg' onClick='back_to_topics()'>Back to topics list</button><button class='btn btn-success btn-lg pull-right ' onClick='submitForm()' type='button'>Submit</button><div id='msgSubmit' class='h3 text-center hidden'>Topic Created!</div></form></div></div>").appendTo( "body" );
+
+}
+
+function submitForm(){
+    // Initiate Variables With Form Content
+    var j = {"title":$("#topicName").val()};
+    var formData = JSON.stringify(j);
+
+    $.ajax({
+        async: false,
+        type: "POST",
+        url: "http://localhost:8080/forum/subForums/"+forum_id+"/topics",
+        data: formData,
+        dataType: "json",
+        contentType : "application/json",
+        statusCode: {
+          200: function (response) {
+             formSuccess();
+          }
+        }
+    });
+}
+function formSuccess(){
+    $( "#msgSubmit" ).removeClass( "hidden" );
+}
+
+function get_messages(clicked_id)
+{
+    $("#topicList").remove();
+    $("#backToForums").remove();
+    $("#createTopic").remove();
+    topic_id = clicked_id;
+    $.getJSON("http://localhost:8080/forum/subForums/"+forum_id+"/topics/"+clicked_id+"/messages", function(object){
+      var items = [];
+      $.each( object, function( key, value) {
+         items.push("<div id="+value.id+" class='panel panel-default'><div class='panel-heading'>"+value.user+"</div><div class='panel-body'>"+value.message+"</div></div>");
+      });
+
+      $( "<div/>", {
+        "id": "messageList",
+        "class": "panel-group center-block",
+        html: items.join( "" )
+      }).appendTo( "body" );
+
+      $( "</p><button id='backToTopics' class='btn btn-secondary btn-lg' onClick='back_to_topics()'>Back to topics list</button>").appendTo( "body" );
+});
+}
+
+function back_to_topics()
+{
+    $("#messageList").remove();
+    $("#backToTopics").remove();
+    $("#createTopicDisplay").remove();
+    get_topics(forum_id);
+}
+
+</script>
+
+</body>
+</html>
