@@ -17,7 +17,7 @@ $(document).ready(function(){
       }
     });
     $(document).ready(function(){
-        $.getJSON("http://localhost:8080/forum/subForums", function(object){
+        $.getJSON("http://testingis.cool/forum/subForums", function(object){
               var items = [];
               $.each( object, function( key, value) {
                  items.push( "<button type='button' class='btn btn-primary btn-lg' id='" + value.id + "' onClick='get_topics(this.id)'>" + value.owner+'-'+value.id+' Topics: '+value.topicCount + "</button>" );
@@ -48,7 +48,7 @@ function back_to_forums()
     $("#topicList").remove();
     $("#backToForums").remove();
     $("#createTopic").remove();
-    $.getJSON("http://localhost:8080/forum/subForums", function(object){
+    $.getJSON("http://testingis.cool/forum/subForums", function(object){
           var items = [];
           $.each( object, function( key, value) {
              items.push( "<button type='button' class='btn btn-primary btn-lg' id='" + value.id + "' onClick='get_topics(this.id)'>" + value.owner+'-'+value.id+' Topics: '+value.topicCount + "</button>" );
@@ -66,7 +66,7 @@ function get_topics(clicked_id)
 {
     $("#subForumList").remove();
     forum_id = clicked_id;
-    $.getJSON("http://localhost:8080/forum/subForums/"+clicked_id+"/topics", function(object){
+    $.getJSON("http://testingis.cool/forum/subForums/"+clicked_id+"/topics", function(object){
       var items = [];
       $.each( object, function( key, value) {
          items.push( "<button type='button' class='btn btn-primary btn-lg' id='" + value.id + "' onClick='get_messages(this.id)'>" + value.title+' Messages: '+value.messageCount + "</button>" );
@@ -101,7 +101,7 @@ function submitForm(){
     $.ajax({
         async: false,
         type: "POST",
-        url: "http://localhost:8080/forum/subForums/"+forum_id+"/topics",
+        url: "http://testingis.cool/forum/subForums/"+forum_id+"/topics",
         data: formData,
         dataType: "json",
         contentType : "application/json",
@@ -122,7 +122,7 @@ function get_messages(clicked_id)
     $("#backToForums").remove();
     $("#createTopic").remove();
     topic_id = clicked_id;
-    $.getJSON("http://localhost:8080/forum/subForums/"+forum_id+"/topics/"+clicked_id+"/messages", function(object){
+    $.getJSON("http://testingis.cool/forum/subForums/"+forum_id+"/topics/"+clicked_id+"/messages", function(object){
       var items = [];
       $.each( object, function( key, value) {
          items.push("<div id="+value.id+" class='panel panel-default'><div class='panel-heading'>"+value.user+"</div><div class='panel-body'>"+value.message+"</div></div>");
