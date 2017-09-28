@@ -11,7 +11,7 @@ x   x   x   x   x
 {
     "doors": {
         "door1": {
-            "username": "President Skroob",
+            "username": "President_Skroob",
             "password": "12345"
         },
         "door2": {
@@ -19,7 +19,7 @@ x   x   x   x   x
             "password": "secret"
         },
         "door3": {
-            "username": "Mr Brown",
+            "username": "Mr_Brown",
             "password": "password345"
         }
     }

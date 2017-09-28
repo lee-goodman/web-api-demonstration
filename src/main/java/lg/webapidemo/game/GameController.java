@@ -55,7 +55,7 @@ public class GameController {
         return gameManager.getGame(gameId).getPlayerSurroundings().toString();
     }
 
-    @GetMapping("/doors/")
+    @GetMapping("/doors")
     public DoorsResponse getDoors(@RequestParam String gameId) {
         return new DoorsResponse(gameManager.getGame(gameId).getDoors());
     }
